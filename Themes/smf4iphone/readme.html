@@ -1,0 +1,291 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>SMF4iPhone - Readme</title>
+	</head>
+	<body>
+		<div>
+			<span style="color: red; font-size: 24pt;">
+				<strong>SMF4iPhone</strong>
+			</span>
+			<br />
+			<span style="color: red;">
+				<small>For SMF 2.0 RC2, 2.0 RC3 and 2.0 RC4</small>
+			</span>
+			<br />
+			<br />
+			Author: <a href="http://www.simplemachines.org/community/index.php?action=profile;u=157205" target="_blank"><strong>Fabius</strong></a>
+			<br />
+			Co-author: <a href="http://www.simplemachines.org/community/index.php?action=profile;u=77887" target="_blank"><strong>butchs</strong></a>
+			<br />
+			<br />
+			Based on: <a href="http://www.simplemachines.org/community/index.php?action=profile;u=199049" target="_blank"><strong>FarFromPerfection</strong></a> SMF4iPhone Theme and Mod
+			<br />
+			<br />
+			Special Thanks to: <a href="http://www.moviladetection.com/" target="_blank"><strong>Movila Ltd</strong></a> for DetectFree service and API
+			<br />
+			<br />
+			<span style="color: blue;">
+				<strong>*Install Instructions*</strong>
+			</span>
+			<br />
+			1. Install <strong>smf4iphone_theme.zip</strong> as a theme and follow <a href="#theme">theme instructions</a>
+			<br />
+			2. Install <strong>smf4iphone_mod.zip</strong> as a package and follow <a href="#mod">mod instructions</a>
+			<br />
+			<br />
+		</div>
+		<hr />
+		<br />
+		<div>
+			<span style="color: red; font-size: 16pt;">
+				<a name="theme"><strong>SMF4iPhone Theme</strong></a>
+			</span>
+			<br />
+			<br />
+			<span style="color: blue;">
+				<strong>*Customization*</strong>
+			</span>
+			<br />
+			To change the header logo, replace <strong>logo.jpg</strong> in the theme images folder.
+			<br />
+			<br />
+			If you want to translate the theme, follow these instuctions:<br />
+			- Make a copy of "<strong>iPhone.language.english.php</strong>", "<strong>iPhone.language.english-utf8.php</strong>", "<strong>Settings.english.php</strong>", "<strong>Settings.english-utf8.php</strong>".<br />
+			- Rename files replacing <strong>english</strong> with <strong>yourlanguage</strong>.<br />
+			- Translate all the strings.
+			<br />
+			<br />
+			If you want your translation to be officially added to the theme, send it to <a href="mailto:fabius85@gmail.com">fabius85@gmail.com</a>.
+			<br />
+			<br />
+			<span style="color: blue;">
+				<strong>*Supported Languages*</strong>
+			</span>
+			<ul>
+				<li>Dutch (Thanks to <em>Mr. Jinx</em>)</li>
+				<li>Dutch-UTF8 (Thanks to <em>Mr. Jinx</em>)</li>
+				<li>English</li>
+				<li>English-UTF8</li>
+				<li>French</li>
+				<li>French-UTF8</li>
+				<li>German (Thanks to <em>Chili</em>)</li>
+				<li>German-UTF8 (Thanks to <em>Chili</em>)</li>
+				<li>Italian</li>
+				<li>Italian-UTF8</li>
+				<li>Spanish_ES (Thanks to <em>videoed</em>)</li>
+				<li>Spanish_ES-UTF8 (Thanks to <em>videoed</em>)</li>
+				<li>Swedish (Thanks to <em>Richard Roe</em>)</li>
+				<li>Swedish-UTF8 (Thanks to <em>Richard Roe</em>)</li>
+			</ul>
+			<span style="color: blue;"><strong>*Changelog*</strong></span>
+			<br />
+			<strong>- 1.1 &nbsp; (26/11/2010)</strong>
+			<ul>
+				<li>SMF 2.0 RC4 compatibility.</li>
+				<li>Added attachments box (assuming there is at least one attachment) to the end of posts box.</li>
+				<li>Added topic title on top of topic's page.</li>
+				<li>Added "Go Down" and "Go Up" links in topics.</li>
+				<li>Added "unread topics" function. They can viewed for single boards by tapping the icons on the left side of boards and sub-boards titles, or for the entire forum with the left button above online users box.</li>
+				<li>Added "mark read" fuction for single boards and entire forum.</li>
+				<li>Added new languages: French, German and German-UTF8 (Thanks to Chili), Spanish_ES and Spanish_ES-UTF8 (Thanks to videoed), Swedish and Swedish-UTF8 (Thanks to Richard Roe).</li>
+				<li>Fixed UTF-8 chars not converted to their respective HTML entity in some language files.</li>
+				<li>Fixed typo errors in Italian translation.</li>
+				<li>Fixed typo errors in style.css (instead of "position", there were two "postion").</li>
+				<li>Fixed long topic title bug. Now if the topic title is longer than 16 chars it will be cut and followed by three dots (...) so board pages will not get misaligned. 16 is the max amount of chars that can be viewed in 1 line, if all chars are UPPERCASE and followed by the longest "new" button (the french one).</li>
+				<li>Fixed avatar showing even if disabled by admin.</li>
+				<li>Fixed bottom pages list not showing if not logged in.</li>
+				<li>Fixed Classic/Back button. Now it should always work properly.</li>
+				<li>Fixed misalignment of "Board | Latest Posts" switcher when translation string of "Latest Posts" was too long.</li>
+				<li>Fixed bugs in reCAPTCHA system.</li>
+				<li>Fixed non localized strings for reCAPTCHA.</li>
+				<li>Fixed "Show Child Boards" button bug.</li>
+				<li>Removed all no longer used images.</li>
+				<li>Updated search field background image, ON/OFF toggle images and theme preview image, to fit new iPhone 4 / iOS 4 appearance.</li>
+				<li>"Search" button and "New" button are now managed by language files.</li>
+				<li>Now when browsing the forum as guest, boards and topics will not all show as "new", but already read.</li>
+			</ul>
+			<strong>- 1.0 &nbsp; (09/04/2010)</strong>
+			<ul>
+			<li>First public release out of beta.</li>
+			</ul>
+		</div>
+		<hr />
+		<br />
+		<div>
+			<span style="color: red; font-size: 16pt;">
+				<a name="mod"><strong>SMF4iPhone Mod</strong></a>
+			</span>
+			<br />
+			<br />
+			<span style="color: blue;">
+				<strong>*Summary*</strong>
+			</span>
+			<br />
+			The mod uses the <a href="http://www.moviladetection.com/detectfree/" target="_blank">Movila Free Device Detection</a> which is a free server that detects wether or not you are using a mobile device. This service takes some of the problems out of the picture. It will check the user agent and also the domain names that are used for mobile devices.
+			<br />
+			<br />
+			After the mobile device is detected, filters defined in &quot;Admin > Configuration > Modification Settings > SMF4iPhone&quot; are used to send a specified user agent to one of previously set themes. If a user agent is not found, the mobile device will go to the failsafe such as wap2 or a theme you specify.
+			<br />
+			<br />
+			<span style="color: blue;">
+				<strong>*Features Of This Mod*</strong>
+			</span>
+			<br />
+			<ul>
+				<li>Uses Movila Free Device Detection service to ensure that a mobile device is reading your forum</li>
+				<li>Automatically detects iPhone device (and others) and transfers to the theme</li>
+				<li>Can manage the transfer of up to four (4) themes</li>
+				<li>User agent list can be adjusted in Modification Settings</li>
+				<li>Theme ID can be changed in Modification Settings</li>
+				<li>If SMF4iPhone Theme and some other themes are installed before the mod, it will automatically detect the theme IDs and set them by default in Modification Settings</li>
+				<li>Supports SMF caching system</li>
+			</ul>
+			<span style="color: blue;">
+				<strong>*Customization*</strong>
+			</span>
+			<br />
+			If you want to translate the mod, you just need to translate the following lines and add them the the end of the respective files.
+			<br /><br />
+			<strong>Modifications.yourlanguage.php</strong> or <strong>Modifications.yourlanguage-utf8.php</strong>:<br />
+			<textarea rows=16 cols=100 readonly>
+// START SMF4iPhone-Mod
+$txt['iphone_title'] = 'SMF4iPhone';
+$txt['iphone_desc'] = 'Adjust SMF4iPhone Mod Settings';
+$txt['id_theme1'] = 'Select the theme #1:';
+$txt['id_theme2'] = 'Select the theme #2:';
+$txt['id_theme3'] = 'Select the theme #3:';
+$txt['failsafe_link'] = 'Enter the mobile failsafe:';
+$txt['id_default_theme'] = 'Select the default theme:';
+$txt['iphone_cache_ignore'] = 'Skip cache errors';
+$txt['phrase1'] = 'Enter the theme #1 phrases:';
+$txt['phrase2'] = 'Enter the theme #2 phrases:';
+$txt['phrase3'] = 'Enter the theme #3 phrases:';
+$txt['notestring'] = 'NOTES: Phrases must be entered in the format of "user agent|user agent" ie "safari|firefox". Mobile failsafe can be "wap", "wap2", "imode" or "theme=#" where # is the ID of the theme. Theme will not load unless both theme and phrases have data.';
+$txt['dms_desc_inside'] = 'Disable mobile theme automatic switch';
+// END SMF4iPhone-Mod</textarea><br /><br />
+			<strong>Errors.yourlanguage.php</strong> or <strong>Errors.yourlanguage-utf8.php</strong>:<br />
+			<textarea rows=4 cols=100 readonly>
+// START SMF4iPhone-Mod
+$txt['iphcache'] = 'SMF4iPhone Mod requires SMF caching to be turned on, goto Admin > Server Settings > Caching, to remove this error';
+$txt['iphDNS'] = 'SMF4iPhone Mod failed to connect to DetectFree';
+// END SMF4iPhone-Mod</textarea><br /><br />
+
+			If you want your translation to be officially added to the mod, send it to <a href="mailto:fabius85@gmail.com">fabius85@gmail.com</a>.
+			<br />
+			<br />
+			<span style="color: blue;">
+				<strong>*Supported Languages*</strong>
+			</span>
+			<br />
+			<ul>
+				<li>Dutch (Thanks to <em>Mr. Jinx</em>)</li>
+				<li>Dutch-UTF8 (Thanks to <em>Mr. Jinx</em>)</li>
+				<li>English</li>
+				<li>English-UTF8</li>
+				<li>French</li>
+				<li>French-UTF8</li>
+				<li>German (Thanks to <em>Chili</em>)</li>
+				<li>German-UTF8 (Thanks to <em>Chili</em>)</li>
+				<li>Italian</li>
+				<li>Italian-UTF8</li>
+				<li>Spanish_ES (Thanks to <em>videoed</em>)</li>
+				<li>Spanish_ES-UTF8 (Thanks to <em>videoed</em>)</li>
+				<li>Swedish (Thanks to <em>Richard Roe</em>)</li>
+				<li>Swedish-UTF8 (Thanks to <em>Richard Roe</em>)</li>
+			</ul>
+			<span style="color: blue;">
+				<strong>*Usage*</strong>
+			</span>
+			<br />
+			The mod can transfer to SMF4iPhone Theme, Curve Mobile, Mobile Theme, or any other theme, basing on the phrases entered in the Modification Settings. It is suggested that you copy the built in phrases. Save them to a safe place and give it a try. If everything works right you should be able to send someone to any theme based on the phrases. Adding a new User Agent is as simple as typing in a new phrase using the proper syntax.
+			<br />
+			<br />
+			If you have &quot;smf4iphone_theme&quot;, &quot;curve-mobile&quot; and &quot;mobile_theme&quot; installed before you load the mod, it will automatically detect the theme IDs and assign them as follows:
+			<br />
+			<br />
+			<strong>Theme # 1</strong>:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;smf4iphone_theme
+			<br />
+			with user agents for<br />
+			&nbsp; <code>iphone|ipod|android|mobile|Safari Mobile</code>
+			<br />
+			<strong>Theme # 2</strong>:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;curve-mobile
+			<br />
+			with user agents for<br />
+			&nbsp; <code>iemobile|Opera Mobi|symbian|series60|series70|series80|series90|series 60|series 70|series 80|series 90|blackberry|blackberry05|palm|webos</code>
+			<br />
+			<strong>Theme # 3</strong>:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;mobile_theme
+			<br />
+			with user agents for<br />
+			&nbsp; <code>nokia|motorola|samsung|fennec|minimo|sonyericsson|htc</code>
+			<br />
+			<strong>Failsafe Theme</strong>:&nbsp; wap2
+			<br />
+			all remaining user agents
+			<br />
+			<br />
+			Phrases must be entered in the format of &quot;user agent|user agent&quot; ie &quot;safari|firefox&quot;. Mobile failsafe can be &quot;wap&quot;, &quot;wap2&quot;, &quot;imode&quot; or &quot;theme=#&quot; where # is the ID of the theme. Theme will not load unless both ID and phrases have data.
+			<br />
+			<br />
+			If any of the above themes are missing the mod will leave the theme ID blank. If either row is blank the theme will be skipped. The selection boxes are text boxes so be careful. A trailing space in theme ID will skip that theme. Please note that the user agents selected are merely a guess and should be adjusted for the theme best fit.
+			<br />
+			<br />
+			The mod works both if using SMF caching system or not. If you don't want to use this support, enable "<strong>Skip cache errors</strong>" option in Modification Settings to prevent your logs from being filled of cache errors.
+			<br />
+			<br />
+			<span style="color: blue;">
+				<strong>*Other Themes*</strong>
+			</span>
+			<br />
+			To add a link to this or another theme type <a href="http://www.yoursite.com/smf/index.php?theme=#" target="_blank">http://www.yoursite.com/smf/index.php?theme=#</a>
+			<br />
+			Where # is your theme ID.
+			<br />
+			<br />
+			Or you can modify your default theme with a selection at the bottom of index.template.php next to wap2. Something like:
+			<br />
+			&nbsp; <code>&lt;a href=&quot;http://www.yoursite.com/smf/index.php?theme=&#039; . $modSettings&#91;&#039;id_theme1&#039;&#93; . &#039;&gt;iPhone Theme&lt;/a&gt;</code>
+			<br />
+			<br />
+			<span style="color: red;">
+				<strong>*Warnings*</strong>
+			</span>
+			<blockquote>
+				<strong><span style="color: red;">VERY IMPORTANT IF YOU DON&#039;T WANT PHP TO CRASH :</span></strong>
+				<br />
+				&nbsp; &nbsp; <strong>a)</strong> In Theme Management, select : &#039;Allow members to select their own themes.&#039;
+				<br />
+				&nbsp; &nbsp; <strong>b)</strong> Select SMF4iPhone Theme.
+				<br />
+				<br />
+				&nbsp; &nbsp; If you don&#039;t do that, when surfing on iPhone, the forum will try forever to use the forbidden to use by force the iPhone theme, and the system will loop until crash.
+				<br />
+				<br />
+				<strong><span style="color: red;">COOKIES MUST BE ENABLED BY USERS FOR THIS MOD TO WORK</span></strong>
+			</blockquote>
+			<span style="color: blue;"><strong>*Known Issues &amp; Things To Do*</strong></span>
+			<br />
+			Use of DetectFree service is limited to the duration that it is offered. If the service is turned off this mod will not work.<br />The phrases must have a certain syntax. A future version may simplify the syntax.
+			<br />
+			<br />
+			<span style="color: blue;"><strong>*Changelog*</strong></span>
+			<br />
+			<strong>- 1.1 &nbsp; (26/11/2010)</strong>
+			<ul>
+				<li>SMF 2.0 RC4 compatibility.</li>
+				<li>Added checkbox to disable mobile theme automatic switch for every user in: Profile > Look and Layout</li>
+				<li>Added theme names to the selection boxes in Mod's settings. Now they will appear like "(ID) Theme Name" so you dont need anymore to serach for theme ID by yourself.</li>
+				<li>Added new languages: French, German and German-UTF8 (Thanks to Chili), Spanish_ES and Spanish_ES-UTF8 (Thanks to videoed), Swedish and Swedish-UTF8 (Thanks to Richard Roe).</li>
+				<li>Fixed UTF-8 chars not converted to their respective HTML entity in some language files.</li>
+				<li>Updated all language translations.</li>
+				<li>Better alignment of "additional notes" at the end of SMF4iPhone Mod settings page.</li>
+				<li>Some improvements to the code.</li>
+			</ul>
+			<strong>- 1.0 &nbsp; (09/04/2010)</strong>
+			<ul>
+				<li>First public release out of beta.</li>
+		</ul>
+		</div>
+	</body>
+</html>

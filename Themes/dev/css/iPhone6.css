@@ -1,0 +1,57 @@
+/* Woopig stylesheet for iPhone 6 */
+
+.post, .personalmessage
+{
+	width: 100%;
+	overflow: auto;
+	line-height: 1.3em;
+	font-size: 2.5em;
+	-webkit-text-size-adjust: none;
+}
+
+#messageindex
+{
+	clear: both;
+	font-size: 1.4em;
+	-webkit-text-size-adjust: none;
+}
+
+.topic_table td
+{
+	font-size: 2.5em;
+	-webkit-text-size-adjust: none;
+}
+
+.topic_table td.lastpost
+{
+	font-size: 1.4em;
+	line-height: 1.3em;
+	padding: 4px;
+	-webkit-text-size-adjust: none;
+}
+
+.content
+{
+	padding: 0.5em 1.2em;
+	margin: 0;
+	border: none;
+	font-size: 2.5em;
+	-webkit-text-size-adjust: none;
+}
+
+#quickReplyOptions form textarea
+{
+	height: 100px;
+	width: 635px;
+	max-width: 100%;
+	min-width: 100%;
+	margin: 0.25em 0 1em 0;
+	font-size: 2.0em;
+	-webkit-text-size-adjust: none;
+}
+input
+{
+	font-size: 1.0em;
+	color: #404040;
+	-webkit-text-size-adjust: none;
+}

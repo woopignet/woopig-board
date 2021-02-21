@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<theme-info xmlns="http://www.simplemachines.org/xml/theme-info" xmlns:smf="http://www.simplemachines.org/">
+	<id>Fabius:SMF4iPhone-Theme</id>
+	<version>2.0 RC4</version>
+	<name>SMF4iPhone</name>
+	<author name="Fabius">fabius85@gmail.com</author>
+	<website>http://www.onima.org/</website>
+	<layers>html,body</layers>
+	<templates>index</templates>
+</theme-info>

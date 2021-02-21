@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+ <style type="text/css">#wrapper{height:110px;overflow:hidden;}</style>
+ <script type="text/javascript">
+  function switchHeight(wrapper, link){
+  if(wrapper.style.height == 'auto'){
+  wrapper.style.height = '110px';
+  link.innerHTML = 'expand';
+  }
+  else{
+  wrapper.style.height = 'auto';
+  link.innerHTML = 'collapse';
+  }
+  }
+ </script>
+</head>
+<body>
+ <div id="wrapper">
+ <blockquote id="bquote">
+ LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL
+ LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL
+ LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL
+ LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL
+ LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL
+ LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL
+ LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL
+ LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL LOLOLOL
+ </blockquote>
+ </div>
+ <script type="text/javascript">
+ var bquote = document.getElementById('bquote');
+ if(bquote.offsetHeight > 110){
+document.write('<a href="#" onclick="switchHeight(document.getElementById(\'wrapper\'), this);">expand</a>');
+ }
+ </script>
+</body>
+</html>

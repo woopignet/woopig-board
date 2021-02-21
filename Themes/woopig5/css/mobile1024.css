@@ -1,0 +1,28 @@
+
+
+/* Styles for the Woopig theme.
+------------------------------------------------------- */
+@import url("mobile.css");
+.buttonlist ul li a
+{
+	font-size: 0.55em; /* xxSHxx font-size: 0.55em; */
+	/* xxSHxx font-weight: bold; */
+	color: #FFFFFF; /* xxSHxx color: #FAFAFA; */
+}
+
+#moderationbuttons
+{
+	font-size: 0.75em; /* xxSHxx .75em */
+}
+
+/* By default (td, body..) use verdana in black. */
+body, td, th , tr
+{
+	font-size: 1.05em; /* xxSHxx font-size: 108%; */
+}
+
+#mainmenu
+{
+	font-size: 0.7em; /* xxSHxx font-size: 0.7em; */
+	line-height: 1.8em; /* xxSHxx 1.7em */
+}
