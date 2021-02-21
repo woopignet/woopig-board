@@ -225,10 +225,10 @@ else
     		<img src="',$settings['images_url'],'/rotate/WP1b.png"/> 
 		</figure>
 		<figure> 
-    		<img src="',$settings['images_url'],'/rotate/WP1a.png"/> 
+    		<img src="',$settings['images_url'],'/rotate/basketball-2021.png"/> 
 		</figure>
 		<figure> 
-    		<img src="',$settings['images_url'],'/rotate/WP1b.png"/> 
+    		<img src="',$settings['images_url'],'/rotate/football-2020.png"/> 
 		</figure>
 		<figure>
     		<img src="',$settings['images_url'],'/rotate/WP1a.png"/>
@@ -237,10 +237,10 @@ else
     		<img src="',$settings['images_url'],'/rotate/WP1b.png"/> 
 		</figure>
 		<figure> 
-    		<img src="',$settings['images_url'],'/rotate/WP1a.png"/> 
+    		<img src="',$settings['images_url'],'/rotate/basketball-2021.png"/> 
 		</figure>
 		<figure> 
-    		<img src="',$settings['images_url'],'/rotate/WP1b.png"/> 
+    		<img src="',$settings['images_url'],'/rotate/football-2020.png"/> 
 		</figure>
 	</div></td>
 	<td><div class="topRrepeat"></div></td></tr>
