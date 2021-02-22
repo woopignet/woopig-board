@@ -219,22 +219,7 @@ else
 	<td>
 	<div id="mainmenu">' , template_menu() , '</div><div class="css-slideshow"> 
   		<figure> 
-    		<img src="',$settings['images_url'],'/rotate/WP1a.png"/> 
-		</figure>
-		<figure> 
-    		<img src="',$settings['images_url'],'/rotate/WP1b.png"/> 
-		</figure>
-		<figure> 
-    		<img src="',$settings['images_url'],'/rotate/basketball-2021.png"/> 
-		</figure>
-		<figure> 
-    		<img src="',$settings['images_url'],'/rotate/football-2020.png"/> 
-		</figure>
-		<figure>
-    		<img src="',$settings['images_url'],'/rotate/WP1a.png"/>
-		</figure>
-		<figure>
-    		<img src="',$settings['images_url'],'/rotate/WP1b.png"/> 
+    		<img src="',$settings['images_url'],'/rotate/baseball-2021.png"/> 
 		</figure>
 		<figure> 
     		<img src="',$settings['images_url'],'/rotate/basketball-2021.png"/> 
