@@ -233,9 +233,6 @@ else
 		<figure> 
     		<img src="',$settings['images_url'],'/rotate/softball-2021.png"/> 
 		</figure>
-		<figure> 
-    		<img src="',$settings['images_url'],'/rotate/soccer-women-2021.png"/> 
-		</figure>
 	</div></td>
 	<td><div class="topRrepeat"></div></td></tr>
 
