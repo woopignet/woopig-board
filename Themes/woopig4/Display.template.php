@@ -621,9 +621,9 @@ function template_main()
 		
 		// Ignore user?		
 		//xxSHxx 20180311 - commenting this out for now since action=ignoreuser doesn't exist
-		if($message['ignoreuser'] > 0)			
-		echo '								
-													<a href="', $scripturl, '?action=ignoreuser;u=', $message['member']['id'], ';rt=', $context['current_topic'], ';rm=', $message['id'], '" title="', ($message['ignoreuser'] == 1 ? $txt['ignore_this_user_button'] : $txt['unignore_this_user_button']), '">', ($message['ignoreuser'] == 1 ? $txt['ignore_link'] : $txt['unignore_link']), '</a> &nbsp;';
+//		if($message['ignoreuser'] > 0)			
+//		echo '								
+//													<a href="', $scripturl, '?action=ignoreuser;u=', $message['member']['id'], ';rt=', $context['current_topic'], ';rm=', $message['id'], '" title="', ($message['ignoreuser'] == 1 ? $txt['ignore_this_user_button'] : $txt['unignore_this_user_button']), '">', ($message['ignoreuser'] == 1 ? $txt['ignore_link'] : $txt['unignore_link']), '</a> &nbsp;';
 
 		// Maybe they want to report this post to the moderator(s)?
 		if ($context['can_report_moderator'])
