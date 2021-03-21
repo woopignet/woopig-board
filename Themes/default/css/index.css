@@ -3618,8 +3618,3 @@ span.hidelink
 		border: none;
 	}
 }
-#check_hide_qedit+label
-{
-  display: inline;
-  margin: 0 4em 0 0.2em;
-}

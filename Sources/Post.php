@@ -8,7 +8,7 @@
  * @copyright 2011 Simple Machines
  * @license http://www.simplemachines.org/about/smf/license.php BSD
  *
- * @version 2.0.14
+ * @version 2.0.18
  */
 
 if (!defined('SMF'))
@@ -1529,7 +1529,7 @@ function Post2()
 		preparsecode($_POST['message']);
 
 		// Let's see if there's still some content left without the tags.
-		if ($smcFunc['htmltrim'](strip_tags(parse_bbc($_POST['message'], false), '<img><object><embed><div><iframe>')) === '' && (!allowedTo('admin_forum') || strpos($_POST['message'], '[html]') === false))
+		if ($smcFunc['htmltrim'](strip_tags(parse_bbc($_POST['message'], false), '<img>')) === '' && (!allowedTo('admin_forum') || strpos($_POST['message'], '[html]') === false))
 			$post_errors[] = 'no_message';
 	}
 	if (isset($_POST['calendar']) && !isset($_REQUEST['deleteevent']) && $smcFunc['htmltrim']($_POST['evtitle']) === '')
@@ -2059,35 +2059,13 @@ function Post2()
 				'board' => $board,
 				'topic' => $topic,
 			);
-
-              			notifyMembersBoard($notifyData);
-            	//tapatalk add
-			global $boarddir;
-			if (function_exists('tapatalk_push_new_topic'))
-				tapatalk_push_new_topic($msgOptions['id']);
-			else if(file_exists($boarddir . '/mobiquo/push_hook.php'))
-			{
-				include_once($boarddir . '/mobiquo/push_hook.php');
-				tapatalk_push_new_topic($msgOptions['id']);
-			}
+			notifyMembersBoard($notifyData);
 		}
 		elseif (empty($_REQUEST['msg']))
 		{
-
-          			// Only send it to everyone if the topic is approved, otherwise just to the topic starter if they want it.
-            	//tapatalk add
+			// Only send it to everyone if the topic is approved, otherwise just to the topic starter if they want it.
 			if ($topic_info['approved'])
-			{
 				sendNotifications($topic, 'reply');
-				global $boarddir;
-				if (function_exists('tapatalk_push_reply'))
-					tapatalk_push_reply($msgOptions['id']);
-				else if(file_exists($boarddir . '/mobiquo/push_hook.php'))
-				{
-					include_once($boarddir . '/mobiquo/push_hook.php');
-					tapatalk_push_reply($msgOptions['id']);
-				}
-			}
 			else
 				sendNotifications($topic, 'reply', array(), $topic_info['id_member_started']);
 		}
@@ -2320,7 +2298,12 @@ function AnnouncementSend()
 				'TOPICSUBJECT' => $context['topic_subject'],
 				'MESSAGE' => $message,
 				'TOPICLINK' => $scripturl . '?topic=' . $topic . '.0',
+				'UNSUBSCRIBELINK' => $scripturl . '?action=notifyannouncements',
 			);
+
+			// Tokens allow people to unsubscribe without logging in
+			if (!empty($modSettings['notify_tokens']))
+				$replacements['UNSUBSCRIBELINK'] .= ';u={UNSUBSCRIBE_ID};token={UNSUBSCRIBE_TOKEN}';
 
 			$emaildata = loadEmailTemplate('new_announcement', $replacements, $cur_language);
 
@@ -2338,7 +2321,22 @@ function AnnouncementSend()
 
 	// For each language send a different mail - low priority...
 	foreach ($announcements as $lang => $mail)
-		sendmail($mail['recipients'], $mail['subject'], $mail['body'], null, null, false, 5);
+	{
+		if (!empty($modSettings['notify_tokens']))
+		{
+			foreach ($mail['recipients'] as $member_id => $member_email)
+			{
+				require_once($sourcedir . '/Notify.php');
+				$token = createUnsubscribeToken($member_id, $member_email, 'announcements');
+
+				$body = str_replace(array('{UNSUBSCRIBE_ID}', '{UNSUBSCRIBE_TOKEN}'), array($member_id, $token), $mail['body']);
+
+				sendmail($member_email, $mail['subject'], $body, null, null, false, 5);
+			}
+		}
+		else
+			sendmail($mail['recipients'], $mail['subject'], $mail['body'], null, null, false, 5);
+	}
 
 	$context['percentage_done'] = round(100 * $context['start'] / $modSettings['latestMember'], 1);
 
@@ -2465,6 +2463,15 @@ function notifyMembersBoard(&$topicData)
 
 			if (!$send_body)
 				unset($replacements['MESSAGE']);
+
+			// Make a token for the unsubscribe link
+			if (!empty($modSettings['notify_tokens']))
+			{
+				require_once($sourcedir . '/Notify.php');
+				$token = createUnsubscribeToken($rowmember['id_member'], $rowmember['email_address'], 'board', $rowmember['id_board']);
+
+				$replacements['UNSUBSCRIBELINK'] .= ';u=' . $rowmember['id_member'] . ';token=' . $token;
+			}
 
 			// Figure out which email to send off
 			$emailtype = '';
@@ -2758,7 +2765,7 @@ function JavaScriptModify()
 
 			preparsecode($_POST['message']);
 
-			if ($smcFunc['htmltrim'](strip_tags(parse_bbc($_POST['message'], false), '<img><object><embed><div><iframe>')) === '')
+			if ($smcFunc['htmltrim'](strip_tags(parse_bbc($_POST['message'], false), '<img>')) === '')
 			{
 				$post_errors[] = 'no_message';
 				unset($_POST['message']);

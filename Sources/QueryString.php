@@ -8,7 +8,7 @@
  * @copyright 2011 Simple Machines
  * @license http://www.simplemachines.org/about/smf/license.php BSD
  *
- * @version 2.0.9
+ * @version 2.0.18
  */
 
 if (!defined('SMF'))
@@ -125,12 +125,12 @@ function cleanRequest()
 		parse_str(preg_replace('/&(\w+)(?=&|$)/', '&$1=', strtr($_SERVER['QUERY_STRING'], array(';?' => '&', ';' => '&', '%00' => '', "\0" => ''))), $_GET);
 
 		// Magic quotes still applies with parse_str - so clean it up.
-		if (function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc() != 0 && empty($modSettings['integrate_magic_quotes']))
+		if (version_compare(PHP_VERSION, '7.4.0') == -1 && function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc() != 0 && empty($modSettings['integrate_magic_quotes']))
 			$_GET = $removeMagicQuoteFunction($_GET);
 	}
 	elseif (strpos(@ini_get('arg_separator.input'), ';') !== false)
 	{
-		if (function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc() != 0 && empty($modSettings['integrate_magic_quotes']))
+		if (version_compare(PHP_VERSION, '7.4.0') == -1 && function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc() != 0 && empty($modSettings['integrate_magic_quotes']))
 			$_GET = $removeMagicQuoteFunction($_GET);
 
 		// Search engines will send action=profile%3Bu=1, which confuses PHP.
@@ -179,7 +179,7 @@ function cleanRequest()
 	}
 
 	// If magic quotes is on we have some work...
-	if (function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc() != 0)
+	if (version_compare(PHP_VERSION, '7.4.0') == -1 && function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc() != 0)
 	{
 		$_ENV = $removeMagicQuoteFunction($_ENV);
 		$_POST = $removeMagicQuoteFunction($_POST);
@@ -461,23 +461,6 @@ function ob_sessrewrite($buffer)
 {
 	global $scripturl, $modSettings, $user_info, $context;
 
-	
-	// Auto Embed Media Pro
-	
-	$showInfo = MediaProCheckInfo();
-			    
-	if ($showInfo == true)
-    	{
-		if (!isset($autoMediaLoaded))
-		{
-		$buffer = preg_replace('~(, Simple Machines LLC</a>)~', ', Simple Machines LLC</a><br /><a href="http://www.createaforum.com" target="_blank">Simple Audio Video Embedder</a>', $buffer);
-		$buffer = preg_replace('~(class="new_win">Simple Machines</a>)~', 'class="new_win">Simple Machines</a><br /><a href="http://www.createaforum.com" target="_blank">Simple Audio Video Embedder</a>', $buffer);
-		$autoMediaLoaded = 1;
-		}
-	}
-	
-	// End Auto Embed Media Pro
-			
 	// If $scripturl is set to nothing, or the SID is not defined (SSI?) just quit.
 	if ($scripturl == '' || !defined('SID'))
 		return $buffer;
@@ -500,6 +483,21 @@ function ob_sessrewrite($buffer)
 			$buffer = preg_replace_callback('~"' . preg_quote($scripturl, '/') . '\?((?:board|topic)=[^#"]+?)(#[^"]*?)?"~', 'pathinfo_insert__preg_callback', $buffer);
 	}
 
+	// Be nice and try to inject session tokens into login forms since many older themes don't.
+	if ($user_info['is_guest'])
+		$buffer = preg_replace_callback(
+			'~(<form[^<]+action=login2(.+))</form>~iUs' . (!empty($context['utf8']) ? 'u' : ''),
+			function ($m) use ($context)
+			{
+				$repl = '';
+				if (strpos($m[0], $context['session_var']) === false)
+					$repl .= '<input type="hidden" name="' . $context['session_var'] . '" value="' . $context['session_id'] . '"/>';
+
+				return $m[1] . $repl . '</form>';
+			},
+			$buffer
+		);
+
 	// Return the changed buffer.
 	return $buffer;
 }
@@ -515,29 +513,4 @@ function pathinfo_insert__preg_callback($matches)
 	global $scripturl;
 	return '"' . $scripturl . "/" . strtr($matches[1], '&;=', '//,') . ".html" . (isset($matches[2]) ? $matches[2] : "") . '"';
 }
-
-function MediaProCheckInfo()
-{
-    global $modSettings, $boardurl;
-    
-    if (isset($modSettings['mediapro_copyrightkey']))
-    {
-        $m = 36;
-        if (!empty($modSettings['mediapro_copyrightkey']))
-        {
-            if ($modSettings['mediapro_copyrightkey'] == sha1($m . '-' . $boardurl))
-            {
-                return false;
-            }
-            else
-                return true;
-        }
-    }
-    
-    return true;
-}
-
-
-		
-
 ?>

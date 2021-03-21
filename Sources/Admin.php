@@ -9,7 +9,7 @@
  * @copyright 2011 Simple Machines
  * @license http://www.simplemachines.org/about/smf/license.php BSD
  *
- * @version 2.0.15
+ * @version 2.0.16
  */
 
 if (!defined('SMF'))
@@ -199,36 +199,12 @@ function AdminMain()
 						// Mod Authors for a "ADD AFTER" on this line. Ensure you end your change with a comma. For example:
 						// 'shout' => array($txt['shout']),
 						// Note the comma!! The setting with automatically appear with the first mod to be added.
-						'recenttopics' => array($txt['recent_topics']),
 					),
 				),
 			),
 		),
-		
-		'mediapro' => array(
-			'title' => $txt['mediapro_admin'],
-			'permission' => array('admin_forum'),
-			'areas' => array(
-				'mediapro' => array(
-					'label' => $txt['mediapro_settings'],
-					'file' => 'AutoEmbedMediaPro2.php',
-					'function' => 'MediaProMain',
-					'custom_url' => $scripturl . '?action=admin;area=mediapro;sa=settings;sesc=' . $sc,
-					'icon' => 'server.gif',
-					'permission' => array('admin_forum'),
-					'subsections' => array(
-						'settings' => array($txt['mediapro_settings']),
-						'copyright' => array($txt['mediapro_copyremove']),
-					),
-				),
-	
-			),
-		),
-
 		'layout' => array(
 			'title' => $txt['layout_controls'],
-				
-
 			'permission' => array('manage_boards', 'admin_forum', 'manage_smileys', 'manage_attachments', 'moderate_forum'),
 			'areas' => array(
 				'manageboards' => array(
@@ -360,6 +336,7 @@ function AdminMain()
 					'subsections' => array(
 						'register' => array($txt['admin_browse_register_new'], 'moderate_forum'),
 						'agreement' => array($txt['registration_agreement'], 'admin_forum'),
+						'policy' => array($txt['privacy_policy'], 'admin_forum'),
 						'reservednames' => array($txt['admin_reserved_set'], 'admin_forum'),
 						'settings' => array($txt['settings'], 'admin_forum'),
 					),
@@ -627,18 +604,18 @@ function AdminHome()
 
 	// Lastly, fill in the blanks in the support resources paragraphs.
 	$txt['support_resources_p1'] = sprintf($txt['support_resources_p1'],
-		'http://wiki.simplemachines.org/',
-		'http://wiki.simplemachines.org/smf/features2',
-		'http://wiki.simplemachines.org/smf/options2',
-		'http://wiki.simplemachines.org/smf/themes2',
-		'http://wiki.simplemachines.org/smf/packages2'
+		'https://wiki.simplemachines.org/',
+		'https://wiki.simplemachines.org/smf/features2',
+		'https://wiki.simplemachines.org/smf/options2',
+		'https://wiki.simplemachines.org/smf/themes2',
+		'https://wiki.simplemachines.org/smf/packages2'
 	);
 	$txt['support_resources_p2'] = sprintf($txt['support_resources_p2'],
-		'http://www.simplemachines.org/community/',
-		'http://www.simplemachines.org/redirect/english_support',
-		'http://www.simplemachines.org/redirect/international_support_boards',
-		'http://www.simplemachines.org/redirect/smf_support',
-		'http://www.simplemachines.org/redirect/customize_support'
+		'https://www.simplemachines.org/community/',
+		'https://www.simplemachines.org/redirect/english_support',
+		'https://www.simplemachines.org/redirect/international_support_boards',
+		'https://www.simplemachines.org/redirect/smf_support',
+		'https://www.simplemachines.org/redirect/customize_support'
 	);
 }
 
@@ -792,7 +769,6 @@ function AdminSearchInternal()
 		array('ModifyModerationSettings', 'area=securitysettings;sa=moderation'),
 		array('ModifyGeneralModSettings', 'area=modsettings;sa=general'),
 		// Mod authors if you want to be "real freaking good" then add any setting pages for your mod BELOW this line!
-		array('ModifyRecentTopics', 'area=modsettings;sa=recenttopics'),
 		array('ManageAttachmentSettings', 'area=manageattachments;sa=attachments'),
 		array('ManageAvatarSettings', 'area=manageattachments;sa=avatars'),
 		array('ModifyCalendarSettings', 'area=managecalendar;sa=settings'),
@@ -858,7 +834,7 @@ function AdminSearchInternal()
 					'url' => (substr($item[1], 0, 4) == 'area' ? $scripturl . '?action=admin;' . $item[1] : $item[1]) . ';' . $context['session_var'] . '=' . $context['session_id'] . ((substr($item[1], 0, 4) == 'area' && $section == 'settings' ? '#' . $item[0][0] : '')),
 					'name' => $name,
 					'type' => $section,
-					'help' => shorten_subject(isset($item[2]) ? strip_tags($helptxt[$item2]) : (isset($helptxt[$found]) ? strip_tags($helptxt[$found]) : ''), 255),
+					'help' => shorten_subject(isset($item[2]) ? strip_tags($helptxt[$item[2]]) : (isset($helptxt[$found]) ? strip_tags($helptxt[$found]) : ''), 255),
 				);
 			}
 		}

@@ -1,5 +1,5 @@
 <?php
-// Version: 2.0; ManageSettings
+// Version: 2.0.16; ManageSettings
 
 global $scripturl;
 
@@ -47,12 +47,14 @@ $txt['cookieTime'] = 'Default login cookies length (in minutes)';
 $txt['localCookies'] = 'Enable local storage of cookies<div class="smalltext">(SSI won\'t work well with this on.)</div>';
 $txt['globalCookies'] = 'Use subdomain independent cookies<div class="smalltext">(turn off local cookies first!)</div>';
 $txt['secureCookies'] = 'Force cookies to be secure<div class="smalltext">(This only applies if you are using HTTPS - don\'t use otherwise!)</div>';
+$txt['cookie_no_auth_secret'] = 'Use basic cookie authentication';
 $txt['securityDisable'] = 'Disable administration security';
 $txt['send_validation_onChange'] = 'Require reactivation after email change';
 $txt['approveAccountDeletion'] = 'Require admin approval when member deletes account';
 $txt['autoOptMaxOnline'] = 'Maximum users online when optimizing<div class="smalltext">(0 for no max.)</div>';
 $txt['autoFixDatabase'] = 'Automatically fix broken tables';
 $txt['allow_disableAnnounce'] = 'Allow users to disable announcements';
+$txt['notify_tokens'] = 'Use token-based unsubscribe links in notification emails<div class="smalltext">Allows users to unsubscribe without logging in.</div>';
 $txt['disallow_sendBody'] = 'Don\'t allow post text in notifications';
 $txt['queryless_urls'] = 'Search engine friendly URLs<div class="smalltext"><strong>Apache/Lighttpd only!</strong></div>';
 $txt['max_image_width'] = 'Max width of posted pictures (0 = disable)';
@@ -299,6 +301,9 @@ $txt['core_settings_item_sp'] = 'Search Engine Tracking';
 $txt['core_settings_item_sp_desc'] = 'Enabling this feature will allow administrators to track search engines as they index your forum.';
 $txt['core_settings_item_w'] = 'Warning System';
 $txt['core_settings_item_w_desc'] = 'This functionality allows administrators and moderators to issue warnings to users; it also includes advanced functionality for automatically removing user rights as their warning level increases. Note to take full advantage of this function &quot;Post Moderation&quot; should be enabled.';
+$txt['core_settings_item_gdpr'] = 'GDPR Compliance';
+$txt['core_settings_item_gdpr_desc'] = 'Enabling this feature will configure a number of settings on your forum to make it compliant with the European Union\'s <a href="https://ec.europa.eu/commission/priorities/justice-and-fundamental-rights/data-protection/2018-reform-eu-data-protection-rules_en" class="bbc_link">General Data Protection Regulation</a>.';
+$txt['core_settings_privacy_policy_warning'] = 'The GDPR requires you to have a privacy policy for your forum. After you enable this setting, you will be take to a page where you can create one.';
 $txt['core_settings_switch_on'] = 'Click to Enable';
 $txt['core_settings_switch_off'] = 'Click to Disable';
 $txt['core_settings_enabled'] = 'Enabled';
@@ -362,56 +367,5 @@ $txt['languages_download_illegal_paths'] = 'Package contains illegal paths - ple
 $txt['languages_download_complete'] = 'Installation Complete';
 $txt['languages_download_complete_desc'] = 'Language pack installed successfully. Please click <a href="%1$s">here</a> to return to the languages page';
 $txt['languages_delete_confirm'] = 'Are you sure you want to delete this language?';
-
-
-  
-//Tapatalk
-$txt['tapatalktitle'] = 'Tapatalk Settings';
-$txt['tp_tapatalkRegisterEnabled'] = 'In-app Registration';
-$txt['tp_general_settings'] = 'General';
-$txt['tp_board_settings'] = 'Boards';
-$txt['tp_rebranding_settings'] = 'Tapatalk - Mobile App Deep Linking (BYO Branded App and Tapatalk)';
-$txt['tp_other_settings'] = 'Help';
-$txt['tp_parent_board'] = 'Boards1';
-$txt['tp_child_board'] = 'Boards2';
-$txt['tp_board_settingsDesc'] = 'Settings related to boards';
-$txt['tp_general_settingsDesc'] = 'These are general settings for tapatalk';
-$txt['tp_other_settingsDesc'] = 'Taptalk information';
-$txt['tp_rebranding_settingsDesc'] = 'Settings for users who have built their own mobile forum application, try build your <a href="http://tapatalk.com/build.php"> <u>own application</u></a>?';
-$txt['tp_select_boards'] = 'Select Boards to HIDE on Tapatalk';
-$txt['tp_disable_newtopic'] = 'Disable New Topic For Boards';
-$txt['tp_push_key'] = 'Tapatalk API Key';
-$txt['tp_ads_disabled'] = 'Disable Ads for Group';
-$txt['tp_push_notifications'] = 'Push Notifications';
-//Tapatalk IAR
-$txt['tp_iar_registration_options'] = 'In-App Registration';
-$txt['tp_iar_usergroup_assignment'] = 'User Group Assignment';
-$txt['tp_iar_spam_prevention'] = 'Spam Prevention';
-$txt['tp_iar_settingsDesc'] = 'Settings related to In App Registration';
-$txt['auto_approval_tp_user'] = 'Automatic approval for user registered from Tapatalk';
-//Tapatalk BYO
-$txt['tp_full_banner'] = 'Smart App Banner';
-$txt['tp_google_indexing_enabled'] = 'Google App Indexing';
-$txt['tp_facebook_indexing_enabled'] = 'Facebook';
-$txt['tp_twitter_indexing_enabled'] = 'Twitter';
-
-$txt['tp_custom_content_replacement'] = 'Thread Content Replacement(Advanced)';
-$txt['taptalk_descp'] = '<strong>Tapatalk for SMF Plugin</strong></br><br>
-For SMF 2.0 RC5/Final, <a href = "http://www.tapatalk.com">http://www.tapatalk.com</a></br>
-For more remote settings, please check <a style="color:red;" href = "http://tapatalk.com/landing.php"><u>here</u></a>.<br><br>
-<b>What is Tapatalk?</b></br>
-Tapatalk is a forum app for iPhone/iPad, Android, BlackBerry, Windows Phone and WebOS. The app provides super fast forum access to any vBulletin, IPBoard, phpBB, SMF, xenForo, MyBB and Kunena forums that have activated Tapatalk. Forum owner can download the free plug-in to activate Tapatalk in your forum.</br>
-
-<b>What does this mod do?</b></br>
-This mod enables your forum to be accessed by the Tapatalk app. The Tapatalk app can be downloaded from Apple iTune Store or from Google Android Market.</br>
-
-<b>What next do I have to do?</b></br>
-After installing this mod, head straight to <a href = "http://tapatalk.com/activate_tapatalk.php">http://tapatalk.com/activate_tapatalk.php</a> and register there. After registering you can enlist your forum into the Tapatalk network.</br>
-</br>
-Please manually change permission of all files under mobiquo/ folder (including the folder itself) to chmod 755 otherwise it won\'t work!!</br>
-</br>
-For more information please visit tapatalk.com</br>
-<br>
-Thank you! :)';
 
 ?>

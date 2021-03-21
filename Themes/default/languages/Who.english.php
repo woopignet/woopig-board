@@ -1,5 +1,5 @@
 <?php
-// Version: 2.0; Who
+// Version: 2.0.16; Who
 
 global $scripturl, $context;
 
@@ -150,8 +150,8 @@ $txt['credits_groups_beta'] = 'Beta Testers';
 $txt['credits_beta_message'] = 'The invaluable few who tirelessly find bugs, provide feedback, and drive the developers crazier.';
 $txt['credits_groups_founder'] = 'Founding Father of SMF';
 $txt['credits_groups_orignal_pm'] = 'Original Project Managers';
+$txt['credits_in_memoriam'] = 'In loving memory of';
 
 // List of people who have made more than a token contribution to this translation. (blank for English)
-$txt['on_tapatalk'] = 'On Tapatalk';
-$txt['on_byo'] = 'On App Of This Forum';$txt['translation_credits'] = array();
+$txt['translation_credits'] = array();
 ?>

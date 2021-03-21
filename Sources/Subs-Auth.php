@@ -8,7 +8,7 @@
  * @copyright 2011 Simple Machines
  * @license http://www.simplemachines.org/about/smf/license.php BSD
  *
- * @version 2.0.15
+ * @version 2.0.18
  */
 
 if (!defined('SMF'))
@@ -102,7 +102,7 @@ if (!defined('SMF'))
 // Actually set the login cookie...
 function setLoginCookie($cookie_length, $id, $password = '')
 {
-	global $cookiename, $boardurl, $modSettings;
+	global $cookiename, $cookie_no_auth_secret, $boardurl, $modSettings;
 
 	// If changing state force them to re-address some permission caching.
 	$_SESSION['mc']['time'] = 0;
@@ -120,6 +120,11 @@ function setLoginCookie($cookie_length, $id, $password = '')
 			setcookie($cookiename, serialize(array(0, '', 0)), time() - 3600, $cookie_url[1], $cookie_url[0], !empty($modSettings['secureCookies']));
 		}
 	}
+
+	// Ensure the cookie can't be forged.
+	// Note: $cookie_no_auth_secret is a fallback that will be removed in future versions!
+	if ($password !== '' && empty($cookie_no_auth_secret))
+		$password = hash_hmac('sha1', $password, get_auth_secret());
 
 	// Get the data and path to set it on.
 	$data = serialize(empty($id) ? array(0, '', 0) : array($id, $password, time() + $cookie_length, $cookie_state));
@@ -536,7 +541,8 @@ function RequestMembers()
 
 		if (preg_match('~&#\d+;~', $row['real_name']) != 0)
 		{
-			$fixchar = create_function('$n', '
+			$fixchar = function($n)
+			{
 				if ($n < 128)
 					return chr($n);
 				elseif ($n < 2048)
@@ -544,7 +550,8 @@ function RequestMembers()
 				elseif ($n < 65536)
 					return chr(224 | $n >> 12) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63);
 				else
-					return chr(240 | $n >> 18) . chr(128 | $n >> 12 & 63) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63);');
+					return chr(240 | $n >> 18) . chr(128 | $n >> 12 & 63) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63);
+			};
 
 			$row['real_name'] = preg_replace_callback('~&#(\d+);~', 'fixchar__callback', $row['real_name']);
 		}

@@ -8,7 +8,7 @@
  * @copyright 2011 Simple Machines
  * @license http://www.simplemachines.org/about/smf/license.php BSD
  *
- * @version 2.0.14
+ * @version 2.0.18
  */
 
 if (!defined('SMF'))
@@ -674,31 +674,11 @@ function constructPageIndex($base_url, &$start, $max_value, $num_per_page, $flex
 		// If they didn't enter an odd value, pretend they did.
 		$PageContiguous = (int) ($modSettings['compactTopicPagesContiguous'] - ($modSettings['compactTopicPagesContiguous'] % 2)) / 2;
 
-		
-		global $txt;
-		
-		// "Prev"
-		if ( !$start_invalid )
-		{
-			$tmpStart = $start - $num_per_page;
-			
-			if ( $start / $num_per_page + 1 > 1 )
-			{
-				$pageindex = sprintf($base_link, $tmpStart, $txt['prev page']);
-				
-				$start > $num_per_page * $PageContiguous and $pageindex .= sprintf($base_link, 0, '1'); 
-			}
-			
-			else
-			{
-				$pageindex = $start > $num_per_page * $PageContiguous ? sprintf($base_link, 0, '1') : '';
-			}
-		}
-		//xxSHxx 20180311 - trying to initialize pageindex to keep from throwing errors later
-		else 
-		{
-			$pageindex = $start == 0 ? ' ' : sprintf($base_link, $start - $num_per_page, '&#171;');
-		}
+		// Show the first page. (>1< ... 6 7 [8] 9 10 ... 15)
+		if ($start > $num_per_page * $PageContiguous)
+			$pageindex = sprintf($base_link, 0, '1');
+		else
+			$pageindex = '';
 
 		// Show the ... after the first page.  (1 >...< 6 7 [8] 9 10 ... 15)
 		if ($start > $num_per_page * ($PageContiguous + 1))
@@ -716,8 +696,6 @@ function constructPageIndex($base_url, &$start, $max_value, $num_per_page, $flex
 		if (!$start_invalid)
 			$pageindex .= '[<strong>' . ($start / $num_per_page + 1) . '</strong>] ';
 		else
-			//xxSHxx 20180311 - this is for the page list within a board right next to the post
-			//it is throwing an undefined error for pageindex but it appears to work
 			$pageindex .= sprintf($base_link, $start, $start / $num_per_page + 1);
 
 		// Show the pages after the current one... (1 ... 6 7 [8] >9 10< ... 15)
@@ -736,16 +714,6 @@ function constructPageIndex($base_url, &$start, $max_value, $num_per_page, $flex
 		// Show the last number in the list. (1 ... 6 7 [8] 9 10 ... >15<)
 		if ($start + $num_per_page * $PageContiguous < $tmpMaxPages)
 			$pageindex .= sprintf($base_link, $tmpMaxPages, $tmpMaxPages / $num_per_page + 1);
-			
-		// "Next"
-		if ( !$start_invalid )
-		{
-			$tmpMaxPages = (int) --$max_value / $num_per_page * $num_per_page;
-			
-			$tmpStart = $start + $num_per_page;
-			
-			$tmpStart <= $tmpMaxPages and $pageindex .= sprintf($base_link, $tmpStart, $txt['next page']);
-		}
 	}
 
 	return $pageindex;
@@ -1117,41 +1085,36 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 				'type' => 'unparsed_content',
 				'content' => '<div class="codeheader">' . $txt['code'] . ': <a href="javascript:void(0);" onclick="return smfSelectText(this);" class="codeoperation">' . $txt['code_select'] . '</a></div>' . ($context['browser']['is_gecko'] || $context['browser']['is_opera'] ? '<pre style="margin: 0; padding: 0;">' : '') . '<code class="bbc_code">$1</code>' . ($context['browser']['is_gecko'] || $context['browser']['is_opera'] ? '</pre>' : ''),
 				// !!! Maybe this can be simplified?
-				'validate' => isset($disabled['code']) ? null : create_function('&$tag, &$data, $disabled', '
-					global $context;
-
-					if (!isset($disabled[\'code\']))
+				'validate' => isset($disabled['code']) ? null : function(&$tag, &$data, $disabled) use ($context)
+				{
+					if (!isset($disabled['code']))
 					{
-						$php_parts = preg_split(\'~(&lt;\?php|\?&gt;)~\', $data, -1, PREG_SPLIT_DELIM_CAPTURE);
+						$php_parts = preg_split('~(&lt;\?php|\?&gt;)~', $data, -1, PREG_SPLIT_DELIM_CAPTURE);
 
 						for ($php_i = 0, $php_n = count($php_parts); $php_i < $php_n; $php_i++)
 						{
 							// Do PHP code coloring?
-							if ($php_parts[$php_i] != \'&lt;?php\')
+							if ($php_parts[$php_i] != '&lt;?php')
 								continue;
 
-							$php_string = \'\';
-							while ($php_i + 1 < count($php_parts) && $php_parts[$php_i] != \'?&gt;\')
+							$php_string = '';
+							while ($php_i + 1 < count($php_parts) && $php_parts[$php_i] != '?&gt;')
 							{
 								$php_string .= $php_parts[$php_i];
-								$php_parts[$php_i++] = \'\';
+								$php_parts[$php_i++] = '';
 							}
 							$php_parts[$php_i] = highlight_php_code($php_string . $php_parts[$php_i]);
 						}
 
 						// Fix the PHP code stuff...
-						$data = str_replace("<pre style=\"display: inline;\">\t</pre>", "\t", implode(\'\', $php_parts));
-
-						// Older browsers are annoying, aren\'t they?
-						if ($context[\'browser\'][\'is_ie4\'] || $context[\'browser\'][\'is_ie5\'] || $context[\'browser\'][\'is_ie5.5\'])
-							$data = str_replace("\t", "<pre style=\"display: inline;\">\t</pre>", $data);
-						else
-							$data = str_replace("\t", "<span style=\"white-space: pre;\">\t</span>", $data);
+						$data = str_replace("<pre style=\"display: inline;\">\t</pre>", "\t", implode('', $php_parts));
+						$data = str_replace("\t", "<span style=\"white-space: pre;\">\t</span>", $data);
 
 						// Recent Opera bug requiring temporary fix. &nsbp; is needed before </code> to avoid broken selection.
-						if ($context[\'browser\'][\'is_opera\'])
-							$data .= \'&nbsp;\';
-					}'),
+						if (!empty($context['browser']['is_opera']))
+							$data .= '&nbsp;';
+					}
+				},
 				'block_level' => true,
 			),
 			array(
@@ -1159,41 +1122,36 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 				'type' => 'unparsed_equals_content',
 				'content' => '<div class="codeheader">' . $txt['code'] . ': ($2) <a href="#" onclick="return smfSelectText(this);" class="codeoperation">' . $txt['code_select'] . '</a></div>' . ($context['browser']['is_gecko'] || $context['browser']['is_opera'] ? '<pre style="margin: 0; padding: 0;">' : '') . '<code class="bbc_code">$1</code>' . ($context['browser']['is_gecko'] || $context['browser']['is_opera'] ? '</pre>' : ''),
 				// !!! Maybe this can be simplified?
-				'validate' => isset($disabled['code']) ? null : create_function('&$tag, &$data, $disabled', '
-					global $context;
-
-					if (!isset($disabled[\'code\']))
+				'validate' => isset($disabled['code']) ? null : function(&$tag, &$data, $disabled) use ($context)
+				{
+					if (!isset($disabled['code']))
 					{
-						$php_parts = preg_split(\'~(&lt;\?php|\?&gt;)~\', $data[0], -1, PREG_SPLIT_DELIM_CAPTURE);
+						$php_parts = preg_split('~(&lt;\?php|\?&gt;)~', $data[0], -1, PREG_SPLIT_DELIM_CAPTURE);
 
 						for ($php_i = 0, $php_n = count($php_parts); $php_i < $php_n; $php_i++)
 						{
 							// Do PHP code coloring?
-							if ($php_parts[$php_i] != \'&lt;?php\')
+							if ($php_parts[$php_i] != '&lt;?php')
 								continue;
 
-							$php_string = \'\';
-							while ($php_i + 1 < count($php_parts) && $php_parts[$php_i] != \'?&gt;\')
+							$php_string = '';
+							while ($php_i + 1 < count($php_parts) && $php_parts[$php_i] != '?&gt;')
 							{
 								$php_string .= $php_parts[$php_i];
-								$php_parts[$php_i++] = \'\';
+								$php_parts[$php_i++] = '';
 							}
 							$php_parts[$php_i] = highlight_php_code($php_string . $php_parts[$php_i]);
 						}
 
 						// Fix the PHP code stuff...
-						$data[0] = str_replace("<pre style=\"display: inline;\">\t</pre>", "\t", implode(\'\', $php_parts));
-
-						// Older browsers are annoying, aren\'t they?
-						if ($context[\'browser\'][\'is_ie4\'] || $context[\'browser\'][\'is_ie5\'] || $context[\'browser\'][\'is_ie5.5\'])
-							$data[0] = str_replace("\t", "<pre style=\"display: inline;\">\t</pre>", $data[0]);
-						else
-							$data[0] = str_replace("\t", "<span style=\"white-space: pre;\">\t</span>", $data[0]);
+						$data[0] = str_replace("<pre style=\"display: inline;\">\t</pre>", "\t", implode('', $php_parts));
+						$data[0] = str_replace("\t", "<span style=\"white-space: pre;\">\t</span>", $data[0]);
 
 						// Recent Opera bug requiring temporary fix. &nsbp; is needed before </code> to avoid broken selection.
-						if ($context[\'browser\'][\'is_opera\'])
-							$data[0] .= \'&nbsp;\';
-					}'),
+						if (!empty($context['browser']['is_opera']))
+							$data[0] .= '&nbsp;';
+					}
+				},
 				'block_level' => true,
 			),
 			array(
@@ -1208,7 +1166,10 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 				'type' => 'unparsed_content',
 				'content' => '<a href="mailto:$1" class="bbc_email">$1</a>',
 				// !!! Should this respect guest_hideContacts?
-				'validate' => create_function('&$tag, &$data, $disabled', '$data = strtr($data, array(\'<br />\' => \'\'));'),
+				'validate' => function(&$tag, &$data, $disabled)
+				{
+					$data = strtr($data, array('<br>' => ''));
+				},
 			),
 			array(
 				'tag' => 'email',
@@ -1223,14 +1184,15 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 				'tag' => 'flash',
 				'type' => 'unparsed_commas_content',
 				'test' => '\d+,\d+\]',
-				'content' => ($context['browser']['is_ie'] && !$context['browser']['is_mac_ie'] ? '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="$2" height="$3"><param name="movie" value="$1" /><param name="play" value="true" /><param name="loop" value="true" /><param name="quality" value="high" /><param name="AllowScriptAccess" value="never" /><embed src="$1" width="$2" height="$3" play="true" loop="true" quality="high" AllowScriptAccess="never" /><noembed><a href="$1" target="_blank" class="new_win">$1</a></noembed></object>' : '<embed type="application/x-shockwave-flash" src="$1" width="$2" height="$3" play="true" loop="true" quality="high" AllowScriptAccess="never" /><noembed><a href="$1" target="_blank" class="new_win">$1</a></noembed>'),
-				'validate' => create_function('&$tag, &$data, $disabled', '
-					if (isset($disabled[\'url\']))
-						$tag[\'content\'] = \'$1\';
-					elseif (strpos($data[0], \'http://\') !== 0 && strpos($data[0], \'https://\') !== 0)
-						$data[0] = \'http://\' . $data[0];
-				'),
-				'disabled_content' => '<a href="$1" target="_blank" class="new_win">$1</a>',
+				'content' => ($context['browser']['is_ie'] && !$context['browser']['is_mac_ie'] ? '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="$2" height="$3"><param name="movie" value="$1" /><param name="play" value="true" /><param name="loop" value="true" /><param name="quality" value="high" /><param name="AllowScriptAccess" value="never" /><embed src="$1" width="$2" height="$3" play="true" loop="true" quality="high" AllowScriptAccess="never" /><noembed><a href="$1" target="_blank" rel="noopener noreferrer" class="bbc_link bbc_flash_disabled new_win">$1</a></noembed></object>' : '<embed type="application/x-shockwave-flash" src="$1" width="$2" height="$3" play="true" loop="true" quality="high" AllowScriptAccess="never" /><noembed><a href="$1" target="_blank" rel="noopener noreferrer" class="bbc_link bbc_flash_disabled new_win">$1</a></noembed>'),
+				'validate' => function(&$tag, &$data, $disabled)
+				{
+					if (isset($disabled['url']))
+						$tag['content'] = '$1';
+					elseif (strpos($data[0], 'http://') !== 0 && strpos($data[0], 'https://') !== 0)
+						$data[0] = 'http://' . $data[0];
+				},
+				'disabled_content' => '<a href="$1" target="_blank" rel="noopener noreferrer" class="bbc_link bbc_flash_disabled new_win">$1</a>',
 			),
 			array(
 				'tag' => 'font',
@@ -1242,22 +1204,24 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 			array(
 				'tag' => 'ftp',
 				'type' => 'unparsed_content',
-				'content' => '<a href="$1" class="bbc_ftp new_win" target="_blank">$1</a>',
-				'validate' => create_function('&$tag, &$data, $disabled', '
-					$data = strtr($data, array(\'<br />\' => \'\'));
-					if (strpos($data, \'ftp://\') !== 0 && strpos($data, \'ftps://\') !== 0)
-						$data = \'ftp://\' . $data;
-				'),
+				'content' => '<a href="$1" class="bbc_ftp new_win" target="_blank" rel="noopener noreferrer">$1</a>',
+				'validate' => function(&$tag, &$data, $disabled)
+				{
+					$data = strtr($data, array('<br />' => ''));
+					if (strpos($data, 'ftp://') !== 0 && strpos($data, 'ftps://') !== 0)
+						$data = 'ftp://' . $data;
+				},
 			),
 			array(
 				'tag' => 'ftp',
 				'type' => 'unparsed_equals',
-				'before' => '<a href="$1" class="bbc_ftp new_win" target="_blank">',
+				'before' => '<a href="$1" class="bbc_ftp new_win" target="_blank" rel="noopener noreferrer">',
 				'after' => '</a>',
-				'validate' => create_function('&$tag, &$data, $disabled', '
-					if (strpos($data, \'ftp://\') !== 0 && strpos($data, \'ftps://\') !== 0)
-						$data = \'ftp://\' . $data;
-				'),
+				'validate' => function(&$tag, &$data, $disabled)
+				{
+					if (strpos($data, 'ftp://') !== 0 && strpos($data, 'ftps://') !== 0)
+						$data = 'ftp://' . $data;
+				},
 				'disallow_children' => array('email', 'ftp', 'url', 'iurl'),
 				'disabled_after' => ' ($1)',
 			),
@@ -1302,14 +1266,11 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 				'content' => '<img src="$1" alt="{alt}"{width}{height} class="bbc_img resized" />',
 				'validate' => function (&$tag, &$data, $disabled)
 				{
-					global $image_proxy_enabled, $image_proxy_secret, $boardurl;
-
 					$data = strtr($data, array('<br>' => ''));
 					if (strpos($data, 'http://') !== 0 && strpos($data, 'https://') !== 0)
 						$data = 'http://' . $data;
 
-					if (substr($data, 0, 8) != 'https://' && $image_proxy_enabled)
-						$data = $boardurl . '/proxy.php?request=' . urlencode($data) . '&hash=' . md5($data . $image_proxy_secret);
+					$data = get_proxied_url($data);
 				},
 				'disabled_content' => '($1)',
 			),
@@ -1319,14 +1280,11 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 				'content' => '<img src="$1" alt="" class="bbc_img" />',
 				'validate' => function (&$tag, &$data, $disabled)
 				{
-					global $image_proxy_enabled, $image_proxy_secret, $boardurl;
-
 					$data = strtr($data, array('<br>' => ''));
 					if (strpos($data, 'http://') !== 0 && strpos($data, 'https://') !== 0)
 						$data = 'http://' . $data;
 
-					if (substr($data, 0, 8) != 'https://' && $image_proxy_enabled)
-						$data = $boardurl . '/proxy.php?request=' . urlencode($data) . '&hash=' . md5($data . $image_proxy_secret);
+					$data = get_proxied_url($data);
 				},
 				'disabled_content' => '($1)',
 			),
@@ -1334,23 +1292,25 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 				'tag' => 'iurl',
 				'type' => 'unparsed_content',
 				'content' => '<a href="$1" class="bbc_link">$1</a>',
-				'validate' => create_function('&$tag, &$data, $disabled', '
-					$data = strtr($data, array(\'<br />\' => \'\'));
-					if (strpos($data, \'http://\') !== 0 && strpos($data, \'https://\') !== 0)
-						$data = \'http://\' . $data;
-				'),
+				'validate' => function(&$tag, &$data, $disabled)
+				{
+					$data = strtr($data, array('<br />' => ''));
+					if (strpos($data, 'http://') !== 0 && strpos($data, 'https://') !== 0)
+						$data = 'http://' . $data;
+				},
 			),
 			array(
 				'tag' => 'iurl',
 				'type' => 'unparsed_equals',
 				'before' => '<a href="$1" class="bbc_link">',
 				'after' => '</a>',
-				'validate' => create_function('&$tag, &$data, $disabled', '
-					if (substr($data, 0, 1) == \'#\')
-						$data = \'#post_\' . substr($data, 1);
-					elseif (strpos($data, \'http://\') !== 0 && strpos($data, \'https://\') !== 0)
-						$data = \'http://\' . $data;
-				'),
+				'validate' => function(&$tag, &$data, $disabled)
+				{
+					if (substr($data, 0, 1) == '#')
+						$data = '#post_' . substr($data, 1);
+					elseif (strpos($data, 'http://') !== 0 && strpos($data, 'https://') !== 0)
+						$data = 'http://' . $data;
+				},
 				'disallow_children' => array('email', 'ftp', 'url', 'iurl'),
 				'disabled_after' => ' ($1)',
 			),
@@ -1421,14 +1381,16 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 				'tag' => 'php',
 				'type' => 'unparsed_content',
 				'content' => '<span class="phpcode">$1</span>',
-				'validate' => isset($disabled['php']) ? null : create_function('&$tag, &$data, $disabled', '
-					if (!isset($disabled[\'php\']))
+				'validate' => isset($disabled['php']) ? null : function(&$tag, &$data, $disabled)
+				{
+					if (!isset($disabled['php']))
 					{
-						$add_begin = substr(trim($data), 0, 5) != \'&lt;?\';
-						$data = highlight_php_code($add_begin ? \'&lt;?php \' . $data . \'?&gt;\' : $data);
+						$add_begin = substr(trim($data), 0, 5) != '&lt;?';
+						$data = highlight_php_code($add_begin ? '&lt;?php ' . $data . '?&gt;' : $data);
 						if ($add_begin)
-							$data = preg_replace(array(\'~^(.+?)&lt;\?.{0,40}?php(?:&nbsp;|\s)~\', \'~\?&gt;((?:</(font|span)>)*)$~\'), \'$1\', $data, 2);
-					}'),
+							$data = preg_replace(array('~^(.+?)&lt;\?.{0,40}?php(?:&nbsp;|\s)~', '~\?&gt;((?:</(font|span)>)*)$~'), '$1', $data, 2);
+					}
+				},
 				'block_level' => false,
 				'disabled_content' => '$1',
 			),
@@ -1462,9 +1424,6 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 				'parsed_tags_allowed' => array('url', 'iurl', 'ftp'),
 				'block_level' => true,
 			),
-			//xxSHxx 20180327 - adding collapse logic with show more
-			//add this next text right after the </blockquote>
-			//<div class="expand">Show More</div>
 			array(
 				'tag' => 'quote',
 				'parameters' => array(
@@ -1513,27 +1472,31 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 				'test' => '[#0-9a-zA-Z\-]{3,12},(left|right|top|bottom|[0123]\d{0,2})\]',
 				'before' => $context['browser']['is_ie'] ? '<span style="display: inline-block; filter: Shadow(color=$1, direction=$2); height: 1.2em;">' : '<span style="text-shadow: $1 $2">',
 				'after' => '</span>',
-				'validate' => $context['browser']['is_ie'] ? create_function('&$tag, &$data, $disabled', '
-					if ($data[1] == \'left\')
+				'validate' => $context['browser']['is_ie'] ? function(&$tag, &$data, $disabled)
+				{
+					if ($data[1] == 'left')
 						$data[1] = 270;
-					elseif ($data[1] == \'right\')
+					elseif ($data[1] == 'right')
 						$data[1] = 90;
-					elseif ($data[1] == \'top\')
+					elseif ($data[1] == 'top')
 						$data[1] = 0;
-					elseif ($data[1] == \'bottom\')
+					elseif ($data[1] == 'bottom')
 						$data[1] = 180;
 					else
-						$data[1] = (int) $data[1];') : create_function('&$tag, &$data, $disabled', '
-					if ($data[1] == \'top\' || (is_numeric($data[1]) && $data[1] < 50))
-						$data[1] = \'0 -2px 1px\';
-					elseif ($data[1] == \'right\' || (is_numeric($data[1]) && $data[1] < 100))
-						$data[1] = \'2px 0 1px\';
-					elseif ($data[1] == \'bottom\' || (is_numeric($data[1]) && $data[1] < 190))
-						$data[1] = \'0 2px 1px\';
-					elseif ($data[1] == \'left\' || (is_numeric($data[1]) && $data[1] < 280))
-						$data[1] = \'-2px 0 1px\';
+						$data[1] = (int) $data[1];
+				} : function(&$tag, &$data, $disabled)
+				{
+					if ($data[1] == 'top' || (is_numeric($data[1]) && $data[1] < 50))
+						$data[1] = '0 -2px 1px';
+					elseif ($data[1] == 'right' || (is_numeric($data[1]) && $data[1] < 100))
+						$data[1] = '2px 0 1px';
+					elseif ($data[1] == 'bottom' || (is_numeric($data[1]) && $data[1] < 190))
+						$data[1] = '0 2px 1px';
+					elseif ($data[1] == 'left' || (is_numeric($data[1]) && $data[1] < 280))
+						$data[1] = '-2px 0 1px';
 					else
-						$data[1] = \'1px 1px 1px\';'),
+						$data[1] = '1px 1px 1px';
+				},
 			),
 			array(
 				'tag' => 'size',
@@ -1548,10 +1511,11 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 				'test' => '[1-7]\]',
 				'before' => '<span style="font-size: $1;" class="bbc_size">',
 				'after' => '</span>',
-				'validate' => create_function('&$tag, &$data, $disabled', '
+				'validate' => function(&$tag, &$data, $disabled)
+				{
 					$sizes = array(1 => 0.7, 2 => 1.0, 3 => 1.35, 4 => 1.45, 5 => 2.0, 6 => 2.65, 7 => 3.95);
-					$data = $sizes[$data] . \'em\';'
-				),
+					$data = $sizes[$data] . 'em';
+				},
 			),
 			array(
 				'tag' => 'sub',
@@ -1585,11 +1549,13 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 				'tag' => 'time',
 				'type' => 'unparsed_content',
 				'content' => '$1',
-				'validate' => create_function('&$tag, &$data, $disabled', '
+				'validate' => function(&$tag, &$data, $disabled)
+				{
 					if (is_numeric($data))
 						$data = timeformat($data);
 					else
-						$tag[\'content\'] = \'[time]$1[/time]\';'),
+						$tag['content'] = '[time]$1[/time]';
+				},
 			),
 			array(
 				'tag' => 'tr',
@@ -1615,33 +1581,29 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 			array(
 				'tag' => 'url',
 				'type' => 'unparsed_content',
-				'content' => '<a href="$1" class="bbc_link" target="_blank">$1</a>',
-				'validate' => create_function('&$tag, &$data, $disabled', '
-					$data = strtr($data, array(\'<br />\' => \'\'));
-					if (strpos($data, \'http://\') !== 0 && strpos($data, \'https://\') !== 0)
-						$data = \'http://\' . $data;
-				'),
+				'content' => '<a href="$1" class="bbc_link" target="_blank" rel="noopener noreferrer">$1</a>',
+				'validate' => function(&$tag, &$data, $disabled)
+				{
+					if (strpos($data, 'http://') !== 0 && strpos($data, 'https://') !== 0)
+						$data = 'http://' . $data;
+				},
 			),
 			array(
 				'tag' => 'url',
 				'type' => 'unparsed_equals',
-				'before' => '<a href="$1" class="bbc_link" target="_blank">',
+				'before' => '<a href="$1" class="bbc_link" target="_blank" rel="noopener noreferrer">',
 				'after' => '</a>',
-				'validate' => create_function('&$tag, &$data, $disabled', '
-					if (strpos($data, \'http://\') !== 0 && strpos($data, \'https://\') !== 0)
-						$data = \'http://\' . $data;
-				'),
+				'validate' => function(&$tag, &$data, $disabled)
+				{
+					if (strpos($data, 'http://') !== 0 && strpos($data, 'https://') !== 0)
+						$data = 'http://' . $data;
+				},
 				'disallow_children' => array('email', 'ftp', 'url', 'iurl'),
 				'disabled_after' => ' ($1)',
 			),
 			array(
 				'tag' => 'white',
 				'before' => '<span style="color: white;" class="bbc_color">',
-				'after' => '</span>',
-			),
-			array(
-				'tag' => 'spoiler',
-				'before' => '<span style="color: #000000; background: #000000;" onmouseover="this.style.color=\'#FFFFFF\';" onmouseout="this.style.color=\'#000000\';">',
 				'after' => '</span>',
 			),
 		);
@@ -2098,8 +2060,6 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 						$quote_alt = !$quote_alt;
 				}
 				// Add a class to the quote to style alternating blockquotes
-				//xxSHxx 20180327 - adding collapsed trying to get collapsible quote fields for long text
-				//$possible['before'] = strtr($possible['before'], array('<blockquote>' => '<blockquote class="bbc_' . ($quote_alt ? 'alternate' : 'standard') . '_quote collapsed">'));
 				$possible['before'] = strtr($possible['before'], array('<blockquote>' => '<blockquote class="bbc_' . ($quote_alt ? 'alternate' : 'standard') . '_quote">'));
 			}
 
@@ -2480,23 +2440,6 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 	// Cleanup whitespace.
 	$message = strtr($message, array('  ' => ' &nbsp;', "\r" => '', "\n" => '<br />', '<br /> ' => '<br />&nbsp;', '&#13;' => "\n"));
 
-	
-		// Auto Embed Media Pro
-		global $sourcedir, $modSettings;
-		if (file_exists($sourcedir . '/AutoEmbedMediaPro2.php'))
-		{
-		
-				require_once($sourcedir . '/AutoEmbedMediaPro2.php');
-				$message = MediaProProcess($message);
-		    
-		}
-
-		// End Auto Embed Media Pro
-
-              // Parse tapatalk emojis.
-	$message = preg_replace('/\[emoji(\d+)\]/i', '<img src="https://emoji.tapatalk-cdn.com/emoji$1.png" />', $message);
-	$message = preg_replace('#<a [^>]*?href="https?://(www\.)?vimeo\.com/(\d+)"[^>]*?>[^>]*?</a>#si', '<iframe src="https://player.vimeo.com/video/$2" width="500" height="300" frameborder="0"></iframe>', $message);
-
 	// Cache the output if it took some time...
 	if (isset($cache_key, $cache_t) && array_sum(explode(' ', microtime())) - array_sum(explode(' ', $cache_t)) > 0.05)
 		cache_put_data($cache_key, $message, 240);
@@ -2590,23 +2533,6 @@ function parsesmileys(&$message)
 	$message = preg_replace_callback($smileyPregSearch, 'smileyPregReplaceCallback', $message);
 }
 
-// This allows use to do delayed argument binding and bring in the replacement variables for some preg replacements.
-function pregReplaceCurry($func, $arity)
-{
-	return create_function('', "
-		\$args = func_get_args();
-		if(count(\$args) >= $arity)
-			return call_user_func_array('$func', \$args);
-		\$args = var_export(\$args, 1);
-		return create_function('','
-			\$a = func_get_args();
-			\$z = ' . \$args . ';
-			\$a = array_merge(\$z,\$a);
-			return call_user_func_array(\'$func\', \$a);
-		');
-	");
-}
-
 // Our callback that does the actual smiley replacements.
 function smileyPregReplaceCallback($matches)
 {
@@ -2645,7 +2571,9 @@ function highlight_php_code($code)
 // Put this user in the online log.
 function writeLog($force = false)
 {
-	global $user_info, $user_settings, $context, $modSettings, $settings, $topic, $board, $smcFunc, $sourcedir;
+	global $user_info, $user_settings, $context, $modSettings, $settings, $topic, $board, $smcFunc, $sourcedir, $remember_old_url;
+
+	$remember_old_url = true;
 
 	// If we are showing who is viewing a topic, let's see if we are, and force an update if so - to make it accurate.
 	if (!empty($settings['display_who_viewing']) && ($topic || $board))
@@ -2837,7 +2765,7 @@ function redirectexit($setLocation = '', $refresh = false)
 // Ends execution.  Takes care of template loading and remembering the previous URL.
 function obExit($header = null, $do_footer = null, $from_index = false, $from_fatal_error = false)
 {
-	global $context, $settings, $modSettings, $txt, $smcFunc, $boarddir;
+	global $context, $settings, $modSettings, $txt, $smcFunc, $remember_old_url;
 	static $header_done = false, $footer_done = false, $level = 0, $has_fatal_error = false;
 
 	// Attempt to prevent a recursive loop.
@@ -2864,12 +2792,23 @@ function obExit($header = null, $do_footer = null, $from_index = false, $from_fa
 		// Was the page title set last minute? Also update the HTML safe one.
 		if (!empty($context['page_title']) && empty($context['page_title_html_safe']))
 			$context['page_title_html_safe'] = $smcFunc['htmlspecialchars'](un_htmlspecialchars($context['page_title']));
-		//tapatalk add
-		include_once($boarddir.'/mobiquo/smartbanner.php');
-
 
 		// Start up the session URL fixer.
 		ob_start('ob_sessrewrite');
+		ob_start(function ($buffer) {
+			global $context;
+			if (!$context['user']['is_guest'])
+				return $buffer;
+
+			return preg_replace_callback('~(<form[^<]+action=login2(.+))</form>~iUs' . (!empty($context['utf8']) ? 'u' : ''), function($m) use ($context) {
+				$repl = '';
+
+				if (strpos($m[0], $context['session_var']) === false)
+					$repl .= '<input type="hidden" name="' . $context['session_var'] . '" value="' . $context['session_id'] . '"/>';
+
+				return $m[1] . $repl . '</form>';
+			}, $buffer);
+		});
 
 		if (!empty($settings['output_buffers']) && is_string($settings['output_buffers']))
 			$buffers = explode(',', $settings['output_buffers']);
@@ -2921,7 +2860,8 @@ function obExit($header = null, $do_footer = null, $from_index = false, $from_fa
 	}
 
 	// Remember this URL in case someone doesn't like sending HTTP_REFERER.
-	if (strpos($_SERVER['REQUEST_URL'], 'action=dlattach') === false && strpos($_SERVER['REQUEST_URL'], 'action=viewsmfile') === false)
+	// !!! $remember_old_url is set in writeLog().
+	if (!empty($remember_old_url))
 		$_SESSION['old_url'] = $_SERVER['REQUEST_URL'];
 
 	// For session check verfication.... don't switch browsers...
@@ -3011,7 +2951,9 @@ function logAction($action, $extra = array(), $log_type = 'moderate')
 	}
 
 	// No point in doing anything else, if the log isn't even enabled.
-	if (empty($modSettings['modlog_enabled']) || !isset($log_types[$log_type]))
+	// ...except in certain special cases:
+	$always_log = !empty($modSettings['force_gdpr']) ? array('agreement_accepted', 'policy_accepted', 'agreement_updated', 'policy_updated') : array();
+	if ((empty($modSettings['modlog_enabled']) && !in_array($action, $always_log)) || !isset($log_types[$log_type]))
 		return false;
 
 	if (isset($extra['member']) && !is_numeric($extra['member']))
@@ -3315,10 +3257,7 @@ function setupThemeContext($forceload = false)
 		// Full URL?
 		elseif (substr($user_info['avatar']['url'], 0, 7) == 'http://' || substr($user_info['avatar']['url'], 0, 8) == 'https://')
 		{
-			if (substr($user_info['avatar']['url'], 0, 8) != 'https://' && $image_proxy_enabled)
-				$context['user']['avatar']['href'] = $boardurl . '/proxy.php?request=' . urlencode($user_info['avatar']['url']) . '&hash=' . md5($user_info['avatar']['url'] . $image_proxy_secret);
-			else
-				$context['user']['avatar']['href'] = $user_info['avatar']['url'];
+			$context['user']['avatar']['href'] = get_proxied_url($user_info['avatar']['url']);
 
 			if ($modSettings['avatar_action_too_large'] == 'option_html_resize' || $modSettings['avatar_action_too_large'] == 'option_js_resize')
 			{
@@ -3523,7 +3462,7 @@ function template_header()
 // Show the copyright...
 function theme_copyright($get_it = false)
 {
-	global $forum_copyright, $context, $boardurl, $forum_version, $txt, $modSettings;
+	global $forum_copyright, $context, $scripturl, $forum_version, $txt, $modSettings;
 
 	// Don't display copyright for things like SSI.
 	if (!isset($forum_version))
@@ -3531,6 +3470,11 @@ function theme_copyright($get_it = false)
 
 	// Put in the version...
 	$forum_copyright = sprintf($forum_copyright, $forum_version);
+
+	// It feels icky putting this here, but it's the only good way to do this without
+	// requiring all custom themes to be updated in order to comply with the GDPR.
+	if (!empty($modSettings['force_gdpr']))
+		$forum_copyright .= ' | <a id="button_agreement" href="' . $scripturl . '?action=agreement"><span>' . $txt['terms_and_policies'] . '</span></a>';
 
 	echo '
 			<span class="smalltext" style="display: inline; visibility: visible; font-family: Verdana, Arial, sans-serif;">' . $forum_copyright . '
@@ -3849,6 +3793,10 @@ function text2words($text, $max_chars = 20, $encrypt = false)
 {
 	global $smcFunc, $context;
 
+	// Upgrader may be working on old DBs...
+	if (!isset($context['utf8']))
+		$context['utf8'] = false;
+
 	// Step 1: Remove entities/things we don't consider words:
 	$words = preg_replace('~(?:[\x0B\0' . ($context['utf8'] ? ($context['server']['complex_preg_chars'] ? '\x{A0}' : "\xC2\xA0") : '\xA0') . '\t\r\s\n(){}\\[\\]<>!@$%^*.,:+=`\~\?/\\\\]+|&(?:amp|lt|gt|quot);)+~' . ($context['utf8'] ? 'u' : ''), ' ', strtr($text, array('<br />' => ' ')));
 
@@ -3869,7 +3817,7 @@ function text2words($text, $max_chars = 20, $encrypt = false)
 				$encrypted = substr(crypt($word, 'uk'), 2, $max_chars);
 				$total = 0;
 				for ($i = 0; $i < $max_chars; $i++)
-					$total += $possible_chars[ord($encrypted{$i})] * pow(63, $i);
+					$total += $possible_chars[ord($encrypted[$i])] * pow(63, $i);
 				$returned_ints[] = $max_chars == 4 ? min($total, 16777215) : $total;
 			}
 		}
@@ -4127,13 +4075,6 @@ function setupMenuContext()
 					),
 				),
 			),
-			'recenttopics' => array(
-				'title' => $txt['recent_topics'],
-				'href' => $scripturl . '?action=recenttopics',
-				'show' => true,
-				'sub_buttons' => array(
-				),
-			),
 			'mlist' => array(
 				'title' => $txt['members_title'],
 				'href' => $scripturl . '?action=mlist',
@@ -4243,7 +4184,8 @@ function setupMenuContext()
 	elseif ($context['current_action'] == 'groups' && $context['allow_moderation_center'])
 		$current_action = 'moderate';
 
-	$context['menu_buttons'][$current_action]['active_button'] = true;
+	if (isset($context['menu_buttons'][$current_action]))
+		$context['menu_buttons'][$current_action]['active_button'] = true;
 
 	if (!$user_info['is_guest'] && $context['user']['unread_messages'] > 0 && isset($context['menu_buttons']['pm']))
 	{
@@ -4260,7 +4202,7 @@ function smf_seed_generator()
 	// Never existed?
 	if (empty($modSettings['rand_seed']))
 	{
-		$modSettings['rand_seed'] = microtime() * 1000000;
+		$modSettings['rand_seed'] = (double) microtime() * 1000000;
 		updateSettings(array('rand_seed' => $modSettings['rand_seed']));
 	}
 
@@ -4420,6 +4362,30 @@ function fixchar__callback($matches)
 		return chr(($num >> 18) + 240) . chr((($num >> 12) & 63) + 128) . chr((($num >> 6) & 63) + 128) . chr(($num & 63) + 128);
 }
 
+/**
+ * Converts html entities to utf8 equivalents
+ * special db wrapper for mysql based on the limitation of mysql/mb3
+ *
+ * Callback function for preg_replace_callback
+ * Uses capture group 1 in the supplied array
+ * Does basic checks to keep characters inside a viewable range.
+ *
+ * @param array $matches An array of matches (relevant info should be the 2nd item in the array)
+ * @return string The fixed string or return the old when limitation of mysql is hit
+ */
+function fixchardb__callback($matches)
+{
+	global $db_type;
+	if (!isset($matches[1]))
+		return '';
+	$num = $matches[1][0] === 'x' ? hexdec(substr($matches[1], 1)) : (int) $matches[1];
+	// it's to big for mb3?
+	if ($num > 0xFFFF && $db_type == 'mysql')
+		return $matches[0];
+	else
+		return fixchar__callback($matches);
+}
+
 // Strips out invalid html entities, replaces others with html style &#123; codes.
 function entity_fix__callback($matches)
 {
@@ -4574,7 +4540,7 @@ function safe_serialize($value)
  */
 function _safe_unserialize($str)
 {
-		// Input  is not a string.
+	// Input  is not a string.
 	if(empty($str) || !is_string($str))
 		return false;
 
@@ -4620,7 +4586,7 @@ function _safe_unserialize($str)
 			$value = substr($matches[2], 0, (int)$matches[1]);
 			$str = substr($matches[2], (int)$matches[1] + 2);
 		}
-		else if($type == 'a' && preg_match('/^a:([0-9]+):{(.*)/s', $str, $matches) && $matches[1] < 256)
+		else if($type == 'a' && preg_match('/^a:([0-9]+):{(.*)/s', $str, $matches))
 		{
 			$expectedLength = (int)$matches[1];
 			$str = $matches[2];
@@ -4635,7 +4601,6 @@ function _safe_unserialize($str)
 			case 3: // In array, expecting value or another array.
 				if($type == 'a')
 				{
-
 					$stack[] = &$list;
 					$list[$key] = array();
 					$list = &$list[$key];
@@ -4691,7 +4656,6 @@ function _safe_unserialize($str)
 			case 0:
 				if($type == 'a')
 				{
-
 					$data = array();
 					$list = &$data;
 					$expected[] = $expectedLength;
@@ -4741,4 +4705,41 @@ function safe_unserialize($str)
 
 	return $out;
 }
+
+/**
+ * Gets the appropriate URL to use for images (or whatever) when using SSL
+ *
+ * The returned URL may or may not be a proxied URL, depending on the situation.
+ * Mods can implement alternative proxies using the 'integrate_proxy' hook.
+ *
+ * @param string $url The original URL of the requested resource
+ * @return string The URL to use
+ */
+function get_proxied_url($url)
+{
+	global $boardurl, $image_proxy_enabled, $image_proxy_secret, $user_info;
+
+	// Only use the proxy if enabled, and never for robots
+	if (empty($image_proxy_enabled) || !empty($user_info['possibly_robot']))
+		return $url;
+
+	$parsedurl = parse_url($url);
+
+	// Don't bother with HTTPS URLs, schemeless URLs, or obviously invalid URLs
+	if (empty($parsedurl['scheme']) || empty($parsedurl['host']) || empty($parsedurl['path']) || $parsedurl['scheme'] === 'https')
+		return $url;
+
+	// We don't need to proxy our own resources
+	if ($parsedurl['host'] === parse_url($boardurl, PHP_URL_HOST))
+		return strtr($url, array('http://' => 'https://'));
+
+	// By default, use SMF's own image proxy script
+	$proxied_url = strtr($boardurl, array('http://' => 'https://')) . '/proxy.php?request=' . urlencode($url) . '&hash=' . hash_hmac('sha1', $url, $image_proxy_secret);
+
+	// Allow mods to easily implement an alternative proxy
+	call_integration_hook('integrate_proxy', array($url, &$proxied_url));
+
+	return $proxied_url;
+}
+
 ?>

@@ -8,7 +8,7 @@
  * @copyright 2011 Simple Machines
  * @license http://www.simplemachines.org/about/smf/license.php BSD
  *
- * @version 2.0.14
+ * @version 2.0.18
  */
 
 if (!defined('SMF'))
@@ -65,13 +65,14 @@ function Register($reg_errors = array())
 	$context['require_agreement'] = !empty($modSettings['requireAgreement']);
 	$context['registration_passed_agreement'] = !empty($_SESSION['registration_agreed']);
 	$context['show_coppa'] = !empty($modSettings['coppaAge']);
+	$context['require_policy_agreement'] = !empty($modSettings['requirePolicyAgreement']);
 
 	// Under age restrictions?
 	if ($context['show_coppa'])
 	{
 		$context['skip_coppa'] = false;
-		$context['coppa_agree_above'] = sprintf($txt['agreement_agree_coppa_above'], $modSettings['coppaAge']);
-		$context['coppa_agree_below'] = sprintf($txt['agreement_agree_coppa_below'], $modSettings['coppaAge']);
+		$context['coppa_agree_above'] = sprintf($txt['agreement' . ($context['require_policy_agreement'] ? '_policy' : '') . '_agree_coppa_above'], $modSettings['coppaAge']);
+		$context['coppa_agree_below'] = sprintf($txt['agreement' . ($context['require_policy_agreement'] ? '_policy' : '') . '_agree_coppa_below'], $modSettings['coppaAge']);
 	}
 
 	// What step are we at?
@@ -141,6 +142,21 @@ function Register($reg_errors = array())
 		}
 	}
 
+	// If you have to agree to the privacy policy, it needs to be loaded from the database.
+	if ($context['require_policy_agreement'])
+	{
+		// Have we got a localized one?
+		if (!empty($modSettings['policy_' . $user_info['language']]))
+			$context['policy'] = parse_bbc($modSettings['policy_' . $user_info['language']]);
+		elseif (!empty($modSettings['policy_' . $language]))
+			$context['policy'] = parse_bbc($modSettings['policy_' . $language]);
+		else
+		{
+			loadLanguage('Errors');
+			$context['policy'] = $txt['error_no_privacy_policy'];
+		}
+	}
+
 	// Any custom fields we want filled in?
 	require_once($sourcedir . '/Profile.php');
 	loadCustomFields(0, 'register');
@@ -200,6 +216,9 @@ function Register($reg_errors = array())
 		);
 	}
 
+	$context['announcements_ask'] = !empty($modSettings['force_gdpr']) || !empty($modSettings['allow_disableAnnounce']);
+	$context['notify_announcements'] = isset($_POST['notify_announcements']) ? (bool) $_POST['notify_announcements'] : !empty($modSettings['announcements_default']);
+
 	// !!! Why isn't this a simple set operation?
 	// Were there any errors?
 	$context['registration_errors'] = array();
@@ -232,7 +251,7 @@ function Register2($verifiedOpenID = false)
 	if (!$verifiedOpenID)
 	{
 		// Well, if you don't agree, you can't register.
-		if (!empty($modSettings['requireAgreement']) && empty($_SESSION['registration_agreed']))
+		if ((!empty($modSettings['requireAgreement']) || !empty($modSettings['requirePolicyAgreement'])) && empty($_SESSION['registration_agreed']))
 			redirectexit();
 
 		// Make sure they came from *somewhere*, have a session.
@@ -365,7 +384,7 @@ function Register2($verifiedOpenID = false)
 	$possible_ints = array_diff($possible_ints, $exclude_fields);
 	$possible_floats = array_diff($possible_floats, $exclude_fields);
 	$possible_bools = array_diff($possible_bools, $exclude_fields);
-	
+
 	// Set the options needed for registration.
 	$regOptions = array(
 		'interface' => 'guest',
@@ -385,16 +404,6 @@ function Register2($verifiedOpenID = false)
 	);
 
 	// Include the additional options that might have been filled in.
-	/* tapatalk 20140330 begin */
-	//Spam Prevention
-	require_once($sourcedir . '/Subs-Tapatalk.php');
-	$tp_iar_spam_prevention = isset($modSettings['tp_iar_spam_prevention']) ? $modSettings['tp_iar_spam_prevention'] : 1;
-	if ($tp_iar_spam_prevention == 2 || $tp_iar_spam_prevention == 3) {
-		if (exttmbq_is_spam($_POST['email'], exttMbqGetIP())) {
-			fatal_error('Sorry, can not register new user with spam info.');
-		}
-	}
-	/* tapatalk 20140330 end */
 	foreach ($possible_strings as $var)
 		if (isset($_POST[$var]))
 			$regOptions['extra_register_vars'][$var] = $smcFunc['htmlspecialchars']($_POST[$var], ENT_QUOTES);
@@ -412,6 +421,9 @@ function Register2($verifiedOpenID = false)
 	if (isset($_POST['default_options']))
 		$_POST['options'] = isset($_POST['options']) ? $_POST['options'] + $_POST['default_options'] : $_POST['default_options'];
 	$regOptions['theme_vars'] = isset($_POST['options']) && is_array($_POST['options']) ? $_POST['options'] : array();
+
+	// Note when they accepted the agreement and privacy policy
+	$regOptions['theme_vars']['agreement_accepted'] = $regOptions['theme_vars']['policy_accepted'] = time();
 
 	// Make sure they are clean, dammit!
 	$regOptions['theme_vars'] = htmlspecialchars__recursive($regOptions['theme_vars']);
@@ -542,7 +554,7 @@ function Register2($verifiedOpenID = false)
 	}
 	else
 	{
-		call_integration_hook('integrate_activate', array($row['member_name']));
+		call_integration_hook('integrate_activate', array($regOptions['username']));
 
 		setLoginCookie(60 * $modSettings['cookieTime'], $memberID, sha1(sha1(strtolower($regOptions['username']) . $regOptions['password']) . $regOptions['register_vars']['password_salt']));
 
@@ -822,7 +834,7 @@ function VerificationCode()
 		elseif (isset($_REQUEST['letter']))
 		{
 			$_REQUEST['letter'] = (int) $_REQUEST['letter'];
-			if ($_REQUEST['letter'] > 0 && $_REQUEST['letter'] <= strlen($code) && !showLetterImage(strtolower($code{$_REQUEST['letter'] - 1})))
+			if ($_REQUEST['letter'] > 0 && $_REQUEST['letter'] <= strlen($code) && !showLetterImage(strtolower($code[$_REQUEST['letter'] - 1])))
 			{
 				header('Content-Type: image/gif');
 				die("\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00\x00\x00\x00\x00\x00\x00\x00\x21\xF9\x04\x01\x00\x00\x00\x00\x2C\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3B");

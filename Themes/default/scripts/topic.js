@@ -314,8 +314,6 @@ QuickModify.prototype.modifySave = function (sSessionId, sSessionVar)
 	x[x.length] = 'message=' + escape(document.forms.quickModForm['message'].value.replace(/&#/g, "&#38;#").php_to8bit()).replace(/\+/g, "%2B");
 	x[x.length] = 'topic=' + parseInt(document.forms.quickModForm.elements['topic'].value);
 	x[x.length] = 'msg=' + parseInt(document.forms.quickModForm.elements['msg'].value);
-	if (document.forms.quickModForm.elements['hide_modify'] && document.forms.quickModForm.elements['hide_modify'].checked)
-		x[x.length] = 'hide_modify=true';
 
 	// Send in the XMLhttp request and let's hope for the best.
 	ajax_indicator(true);
@@ -352,11 +350,6 @@ QuickModify.prototype.onModifyDone = function (XMLDoc)
 		for (var i = 0; i < body.childNodes.length; i++)
 			bodyText += body.childNodes[i].nodeValue;
 
-		if (document.forms.quickModForm.elements['hide_modify'])
-			var hide_modify = document.forms.quickModForm.elements['hide_modify'].checked;
-		else
-			var hide_modify = false;
-
 		this.sMessageBuffer = this.opt.sTemplateBodyNormal.replace(/%body%/, bodyText.replace(/\$/g, '{&dollarfix;$}')).replace(/\{&dollarfix;\$\}/g,'$');
 		setInnerHTML(this.oCurMessageDiv, this.sMessageBuffer);
 
@@ -371,7 +364,7 @@ QuickModify.prototype.onModifyDone = function (XMLDoc)
 			setInnerHTML(document.getElementById('top_subject'), this.opt.sTemplateTopSubject.replace(/%subject%/, sSubjectText).replace(/\{&dollarfix;\$\}/g, '$'));
 
 		// Show this message as 'modified on x by y'.
-		if (this.opt.bShowModify && !hide_modify)
+		if (this.opt.bShowModify)
 			setInnerHTML(document.getElementById('modified_' + this.sCurMessageId.substr(4)), message.getElementsByTagName('modified')[0].childNodes[0].nodeValue);
 	}
 	else if (error)

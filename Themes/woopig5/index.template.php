@@ -59,8 +59,6 @@ function template_main_above()
 {
 	global $context, $settings, $options, $scripturl, $txt, $modSettings;
 	
-	echo $context['tapatalk_body_hook'];
-
 	// Show right to left and the character set for ease of translating.
 	echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"', $context['right_to_left'] ? ' dir="rtl"' : '', '>
@@ -95,18 +93,16 @@ function template_main_above()
 	//</style>
 	// Mobile Arrays
 	
-	$context['browser']['is_mobile'] = $context['browser']['is_iphone'] || $context['browser']['is_ie_mobile'] || $context['browser']['is_android_phone'] || $context['browser']['is_blackberry'] || $context['browser']['is_symbian'] || $context['browser']['is_netfront'] || $context['browser']['is_palm'] || $context['browser']['is_web_os'] || $context['browser']['is_opera_mobi'] || $context['browser']['is_opera_mini'] || $context['browser']['is_fennec'];
+//	$context['browser']['is_mobile'] = $context['browser']['is_iphone'] || $context['browser']['is_ie_mobile'] || $context['browser']['is_android_phone'] || $context['browser']['is_blackberry'] || $context['browser']['is_symbian'] || $context['browser']['is_netfront'] || $context['browser']['is_palm'] || $context['browser']['is_web_os'] || $context['browser']['is_opera_mobi'] || $context['browser']['is_opera_mini'] || $context['browser']['is_fennec'];
 
 
-	$context['browser']['is_tablet'] = $context['browser']['is_ipad'] || $context['browser']['is_android_tablet'];
+//	$context['browser']['is_tablet'] = $context['browser']['is_ipad'] || $context['browser']['is_android_tablet'];
 
 	// RTL languages require an additional stylesheet.
 	if ($context['right_to_left'])
 		echo '
 	<link rel="stylesheet" type="text/css" href="', $settings['theme_url'], '/css/rtl.css" />';
 	
-	echo $context['tapatalk_body_hook'];
-
 	// Here comes the JavaScript bits!
 	echo '
 	<script type="text/javascript" src="', $settings['default_theme_url'], '/scripts/script.js?fin20"></script>
@@ -507,9 +503,9 @@ function userbox()
 //			<span class="boxlinks">&nbsp;&nbsp;<a href="', $scripturl, '?action=unread;all;start=0">ALL UNREAD TOPICS</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="', $scripturl, '?action=unreadreplies">ALL UNREAD REPLIES</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="', $scripturl, '?action=recenttopics">RECENT TOPICS FEED</a></div></span>';
 
 		//xxSHxx 20180327 - setup next event calendar info and link
-		$calendar_php = dirname(dirname(__FILE__)) . '/../../calsports/events_next_func.php';
-		require_once ($calendar_php);
-		$next_event = get_next_event();
+//		$calendar_php = dirname(dirname(__FILE__)) . '/../../calsports/events_next_func.php';
+//		require_once ($calendar_php);
+//		$next_event = get_next_event();
 
 		echo '<div id="pmbox">';
 		if($context['user']['is_logged']){
@@ -519,7 +515,7 @@ function userbox()
 			, '?action=unreadreplies">ALL UNREAD REPLIES</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="'
 			, $scripturl, '?action=recenttopics">RECENT TOPICS FEED</a>&nbsp;&nbsp;|'
 			//. $calendar_php . '</div></span>';
-			. '&nbsp;' . $next_event . '</div></span>';
+			. '&nbsp;</div></span>';
 			
 		}
 		else

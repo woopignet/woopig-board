@@ -629,14 +629,14 @@ function template_main()
 		// Ignore user?		
 		//xxSHxx 20180311 - ignoreuser ignore user code
 		//xxSHxx 20180318 - changed ignore / unignore text to look like a button
-		if($message['ignoreuser'] > 0)			
-		echo '								
-													<a href="', $scripturl, '?action=ignoreuser;u=', $message['member']['id'], ';rt=', 
-													$context['current_topic'], ';rm=', $message['id'], '" title="', 
-													($message['ignoreuser'] == 1 ? $txt['ignore_this_user_button'] : $txt['unignore_this_user_button']), '">', 
-													'<div class="boxlinks_button">&nbsp;&nbsp;' . 
-													($message['ignoreuser'] == 1 ? $txt['ignore_link'] : $txt['unignore_link']), 
-													'&nbsp;&nbsp;</div></a> &nbsp;';
+//		if($message['ignoreuser'] > 0)			
+//		echo '								
+//													<a href="', $scripturl, '?action=ignoreuser;u=', $message['member']['id'], ';rt=', 
+//													$context['current_topic'], ';rm=', $message['id'], '" title="', 
+//													($message['ignoreuser'] == 1 ? $txt['ignore_this_user_button'] : $txt['unignore_this_user_button']), '">', 
+//													'<div class="boxlinks_button">&nbsp;&nbsp;' . 
+//													($message['ignoreuser'] == 1 ? $txt['ignore_link'] : $txt['unignore_link']), 
+//													'&nbsp;&nbsp;</div></a> &nbsp;';
 /* original code - keeping for a bit */
 													/*
 													<a href="', $scripturl, '?action=ignoreuser;u=', $message['member']['id'], ';rt=', 
@@ -902,7 +902,6 @@ function template_main()
 									<input type="hidden" name="topic" value="' . $context['current_topic'] . '" />
 									<input type="hidden" name="msg" value="%msg_id%" />
 									<div class="righttext">
-										' . ( $user_info['is_admin'] ? '<input type="checkbox" id="check_hide_qedit" name="hide_modify" /><label for="check_hide_qedit">' . $txt['hide_edit'] . '</label>' : '') . '
 										<input type="submit" name="post" value="' . $txt['save'] . '" tabindex="' . $context['tabindex']++ . '" onclick="return oQuickModify.modifySave(\'' . $context['session_id'] . '\', \'' . $context['session_var'] . '\');" accesskey="s" class="button_submit" />&nbsp;&nbsp;' . ($context['show_spellchecking'] ? '<input type="button" value="' . $txt['spell_check'] . '" tabindex="' . $context['tabindex']++ . '" onclick="spellCheck(\'quickModForm\', \'message\');" class="button_submit" />&nbsp;&nbsp;' : '') . '<input type="submit" name="cancel" value="' . $txt['modify_cancel'] . '" tabindex="' . $context['tabindex']++ . '" onclick="return oQuickModify.modifyCancel();" class="button_submit" />
 									</div>
 								</div>'), ',

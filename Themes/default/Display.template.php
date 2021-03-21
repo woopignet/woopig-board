@@ -7,12 +7,12 @@
  * @copyright 2011 Simple Machines
  * @license http://www.simplemachines.org/about/smf/license.php BSD
  *
- * @version 2.0
+ * @version 2.0.16
  */
 
 function template_main()
 {
-	global $context, $settings, $options, $txt, $scripturl, $modSettings, $user_info;
+	global $context, $settings, $options, $txt, $scripturl, $modSettings;
 
 	// Let them know, if their report was a success!
 	if ($context['report_sent'])
@@ -363,7 +363,7 @@ function template_main()
 				// Don't show an icon if they haven't specified a website.
 				if ($message['member']['website']['url'] != '' && !isset($context['disabled_fields']['website']))
 					echo '
-										<li><a href="', $message['member']['website']['url'], '" title="' . $message['member']['website']['title'] . '" target="_blank" class="new_win">', ($settings['use_image_buttons'] ? '<img src="' . $settings['images_url'] . '/www_sm.gif" alt="' . $message['member']['website']['title'] . '" />' : $txt['www']), '</a></li>';
+										<li><a href="', $message['member']['website']['url'], '" title="' . $message['member']['website']['title'] . '" target="_blank" rel="noopener noreferrer" class="new_win">', ($settings['use_image_buttons'] ? '<img src="' . $settings['images_url'] . '/www_sm.gif" alt="' . $message['member']['website']['title'] . '" />' : $txt['www']), '</a></li>';
 
 				// Don't show the email address if they want it hidden.
 				if (in_array($message['member']['show_email'], array('yes', 'yes_permission_override', 'no_through_forum')))
@@ -799,7 +799,6 @@ function template_main()
 									<input type="hidden" name="topic" value="' . $context['current_topic'] . '" />
 									<input type="hidden" name="msg" value="%msg_id%" />
 									<div class="righttext">
-										' . ( $user_info['is_admin'] ? '<input type="checkbox" id="check_hide_qedit" name="hide_modify" /><label for="check_hide_qedit">' . $txt['hide_edit'] . '</label>' : '') . '
 										<input type="submit" name="post" value="' . $txt['save'] . '" tabindex="' . $context['tabindex']++ . '" onclick="return oQuickModify.modifySave(\'' . $context['session_id'] . '\', \'' . $context['session_var'] . '\');" accesskey="s" class="button_submit" />&nbsp;&nbsp;' . ($context['show_spellchecking'] ? '<input type="button" value="' . $txt['spell_check'] . '" tabindex="' . $context['tabindex']++ . '" onclick="spellCheck(\'quickModForm\', \'message\');" class="button_submit" />&nbsp;&nbsp;' : '') . '<input type="submit" name="cancel" value="' . $txt['modify_cancel'] . '" tabindex="' . $context['tabindex']++ . '" onclick="return oQuickModify.modifyCancel();" class="button_submit" />
 									</div>
 								</div>'), ',

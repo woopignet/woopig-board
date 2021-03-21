@@ -8,7 +8,7 @@
  * @copyright 2011 Simple Machines
  * @license http://www.simplemachines.org/about/smf/license.php BSD
  *
- * @version 2.0.14
+ * @version 2.0.18
  */
 
 if (!defined('SMF'))
@@ -236,7 +236,10 @@ function preparsecode(&$message, $previewing = false)
 				{
 					static $htmlfunc = null;
 					if ($htmlfunc === null)
-						$htmlfunc = create_function('$m', 'return \'[html]\' . strtr(un_htmlspecialchars("$m[1]"), array("\n" => \'&#13;\', \'  \' => \' &#32;\', \'[\' => \'&#91;\', \']\' => \'&#93;\')) . \'[/html]\';');
+						$htmlfunc = function($m)
+						{
+							return '[html]' . strtr(un_htmlspecialchars("$m[1]"), array("\n" => '&#13;', '  ' => ' &#32;', '[' => '&#91;', ']' => '&#93;')) . '[/html]';
+						};
 					$parts[$i] = preg_replace_callback('~\[html\](.+?)\[/html\]~is', $htmlfunc, $parts[$i]);
 				}
 
@@ -1241,7 +1244,8 @@ function mimespecialchars($string, $with_charset = true, $hotmail_fix = false, $
 					$string = $newstring;
 			}
 
-			$fixchar = create_function('$n', '
+			$fixchar = function($n)
+			{
 				if ($n < 128)
 					return chr($n);
 				elseif ($n < 2048)
@@ -1249,7 +1253,8 @@ function mimespecialchars($string, $with_charset = true, $hotmail_fix = false, $
 				elseif ($n < 65536)
 					return chr(224 | $n >> 12) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63);
 				else
-					return chr(240 | $n >> 18) . chr(128 | $n >> 12 & 63) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63);');
+					return chr(240 | $n >> 18) . chr(128 | $n >> 12 & 63) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63);
+			};
 
 			$string = preg_replace_callback('~&#(\d{3,8});~', 'fixchar__callback', $string);
 
@@ -1343,12 +1348,21 @@ function smtp_mail($mail_to_array, $subject, $message, $headers)
 	if (!server_parse(null, $socket, '220'))
 		return false;
 
+	// Start off by using the stored mail server.
+	$helo = $modSettings['smtp_host'];
+
+	// Try and determine this server's name.
+	if (function_exists('gethostname') && gethostname() !== false)
+		$helo = gethostname();
+	elseif (function_exists('php_uname'))
+		$helo = php_uname('n');
+	elseif (!empty($_SERVER['SERVER_NAME']))
+		$helo = $_SERVER['SERVER_NAME'];
+
 	if ($modSettings['mail_type'] == 1 && $modSettings['smtp_username'] != '' && $modSettings['smtp_password'] != '')
 	{
-		// !!! These should send the CURRENT server's name, not the mail server's!
-
 		// EHLO could be understood to mean encrypted hello...
-		if (server_parse('EHLO ' . $modSettings['smtp_host'], $socket, null) == '250')
+		if (server_parse('EHLO ' . $helo, $socket, null) == '250')
 		{
 			if (!server_parse('AUTH LOGIN', $socket, '334'))
 				return false;
@@ -1359,13 +1373,13 @@ function smtp_mail($mail_to_array, $subject, $message, $headers)
 			if (!server_parse($modSettings['smtp_password'], $socket, '235'))
 				return false;
 		}
-		elseif (!server_parse('HELO ' . $modSettings['smtp_host'], $socket, '250'))
+		elseif (!server_parse('HELO ' . $helo, $socket, '250'))
 			return false;
 	}
 	else
 	{
 		// Just say "helo".
-		if (!server_parse('HELO ' . $modSettings['smtp_host'], $socket, '250'))
+		if (!server_parse('HELO ' . $helo, $socket, '250'))
 			return false;
 	}
 
@@ -1659,6 +1673,15 @@ function sendNotifications($topics, $type, $exclude = array(), $members_only = a
 			'TOPICLINK' => $scripturl . '?topic=' . $row['id_topic'] . '.new;topicseen#new',
 			'UNSUBSCRIBELINK' => $scripturl . '?action=notify;topic=' . $row['id_topic'] . '.0',
 		);
+
+		// Make a token for the unsubscribe link
+		if (!empty($modSettings['notify_tokens']))
+		{
+			require_once($sourcedir . '/Notify.php');
+			$token = createUnsubscribeToken($row['id_member'], $row['email_address'], 'topic', $row['id_topic']);
+
+			$replacements['UNSUBSCRIBELINK'] .= ';u=' . $row['id_member'] . ';token=' . $token;
+		}
 
 		if ($type == 'remove')
 			unset($replacements['TOPICLINK'], $replacements['UNSUBSCRIBELINK']);
@@ -2106,7 +2129,7 @@ function createAttachment(&$attachmentOptions)
 			if (!empty($size['mime']))
 				$attachmentOptions['mime_type'] = $size['mime'];
 			// Otherwise a valid one?
-			elseif (isset($validImageTypes[$size[2]]))
+			elseif (!empty($size[2]) && isset($validImageTypes[$size[2]]))
 				$attachmentOptions['mime_type'] = 'image/' . $validImageTypes[$size[2]];
 		}
 	}
@@ -2261,7 +2284,7 @@ function createAttachment(&$attachmentOptions)
 		{
 			if (!empty($size['mime']))
 				$attachmentOptions['mime_type'] = $size['mime'];
-			elseif (isset($validImageTypes[$size[2]]))
+			elseif (!empty($size[2]) && isset($validImageTypes[$size[2]]))
 				$attachmentOptions['mime_type'] = 'image/' . $validImageTypes[$size[2]];
 		}
 
@@ -2292,7 +2315,7 @@ function createAttachment(&$attachmentOptions)
 
 	// Security checks for images
 	// Do we have an image? If yes, we need to check it out!
-	if (isset($validImageTypes[$size[2]]))
+	if (!empty($size[2]) && isset($validImageTypes[$size[2]]))
 	{
 		if (!checkImageContents($attachmentOptions['destination'], !empty($modSettings['attachment_image_paranoid'])))
 		{
@@ -2318,7 +2341,7 @@ function createAttachment(&$attachmentOptions)
 				// Let's update the image information
 				// !!! This is becoming a mess: we keep coming back and update the database,
 				//  instead of getting it right the first time.
-				if (isset($validImageTypes[$size[2]]))
+				if (!empty($size[2]) && isset($validImageTypes[$size[2]]))
 				{
 					$attachmentOptions['mime_type'] = 'image/' . $validImageTypes[$size[2]];
 					$smcFunc['db_query']('', '
@@ -2350,7 +2373,7 @@ function createAttachment(&$attachmentOptions)
 
 			if (!empty($size['mime']))
 				$thumb_mime = $size['mime'];
-			elseif (isset($validImageTypes[$size[2]]))
+			elseif (!empty($size[2]) && isset($validImageTypes[$size[2]]))
 				$thumb_mime = 'image/' . $validImageTypes[$size[2]];
 			// Lord only knows how this happened...
 			else
@@ -2432,29 +2455,17 @@ function modifyPost(&$msgOptions, &$topicOptions, &$posterOptions)
 			$smcFunc['db_free_result']($request);
 		}
 	}
-	if (!$user_info['is_admin'] || !isset($_POST['hide_modify']))
+	if (!empty($msgOptions['modify_time']))
 	{
-		if (!empty($msgOptions['modify_time']))
-		{
-			$messages_columns['modified_time'] = $msgOptions['modify_time'];
-			$messages_columns['modified_name'] = $msgOptions['modify_name'];
-			$messages_columns['id_msg_modified'] = $modSettings['maxMsgID'];
-		}
-		if (isset($msgOptions['smileys_enabled']))
-			$messages_columns['smileys_enabled'] = empty($msgOptions['smileys_enabled']) ? 0 : 1;
-
-		// Which columns need to be ints?
-		$messageInts = array('modified_time', 'id_msg_modified', 'smileys_enabled');
+		$messages_columns['modified_time'] = $msgOptions['modify_time'];
+		$messages_columns['modified_name'] = $msgOptions['modify_name'];
+		$messages_columns['id_msg_modified'] = $modSettings['maxMsgID'];
 	}
-	else
-	{
-		if (isset($msgOptions['smileys_enabled']))
-			$messages_columns['smileys_enabled'] = empty($msgOptions['smileys_enabled']) ? 0 : 1;
+	if (isset($msgOptions['smileys_enabled']))
+		$messages_columns['smileys_enabled'] = empty($msgOptions['smileys_enabled']) ? 0 : 1;
 
-		// Which columns need to be ints?
-		$messageInts = array('smileys_enabled');
-	}
-
+	// Which columns need to be ints?
+	$messageInts = array('modified_time', 'id_msg_modified', 'smileys_enabled');
 	$update_parameters = array(
 		'id_msg' => $msgOptions['id'],
 	);
@@ -2928,6 +2939,15 @@ function sendApprovalNotifications(&$topicData)
 				'TOPICLINK' => $scripturl . '?topic=' . $row['id_topic'] . '.new;topicseen#new',
 				'UNSUBSCRIBELINK' => $scripturl . '?action=notify;topic=' . $row['id_topic'] . '.0',
 			);
+
+			// Make a token for the unsubscribe link
+			if (!empty($modSettings['notify_tokens']))
+			{
+				require_once($sourcedir . '/Notify.php');
+				$token = createUnsubscribeToken($row['id_member'], $row['email_address'], 'topic', $row['id_topic']);
+
+				$replacements['UNSUBSCRIBELINK'] .= ';u=' . $row['id_member'] . ';token=' . $token;
+			}
 
 			$message_type = 'notification_reply';
 			// Do they want the body of the message sent too?
