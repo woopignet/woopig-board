@@ -224,10 +224,10 @@ else
     		<img src="',$settings['images_url'],'/rotate/football-2020.png"/> 
 		</figure>
 		<figure> 
-    		<img src="',$settings['images_url'],'/rotate/womens-bball-2021.png"/> 
+    		<img src="',$settings['images_url'],'/rotate/softball-2021.png"/> 
 		</figure>
 		<figure> 
-    		<img src="',$settings['images_url'],'/rotate/softball-2021.png"/> 
+    		<img src="',$settings['images_url'],'/rotate/elite-8-banner.png"/> 
 		</figure>
 	</div></td>
 	<td><div class="topRrepeat"></div></td></tr>
