@@ -1,5 +1,4 @@
 
-
 /* Styles for the Woopig theme.
 ------------------------------------------------------- */
 
@@ -16,9 +15,8 @@
     font-weight: normal;
     font-style: normal;
 	text-transform: uppercase;
-	font-color: #CC0000;
+	font-color: #FFFFFF;
 	font-size: 2.0em;
-
 }
 
 @font-face {
@@ -44,7 +42,6 @@
          url('fonts/opensans-regular-webfont.svg#open_sansregular') format('svg');
     font-weight: normal;
     font-style: normal;
-	font-size:calc(10px + 1.5vw);
 
 }
 
@@ -412,6 +409,7 @@ hr, .hrcolor
 h1, h2, h3, h4, h5, h6
 {
 	color: #404040;
+	font-size: 1em;
 	margin: 0;
 	padding: 0;
 }
@@ -460,8 +458,9 @@ em
 	width: 100%;
 	min-width: 670px;
 	height: 1.8em;
-	background-color: #EAEAEA;
+	background-color: #353535;
 	z-index: -1;
+	font-color: #FFFFFF;
 }
 .topRrepeat
 {
@@ -510,6 +509,7 @@ em
 .floatright
 {
 	float: right;
+	margin-top: 9px;
 }
 .floatleft
 {
@@ -550,19 +550,77 @@ em
 {
 	font-size: 0.75em;
 	font-family: "LatoRegular", "Arial Unicode MS", "OpenSans", sans-serif;
-	font-color: #CC0000;
+	font-color: #FFFFFF;
 	text-transform: uppercase;
 	font-weight: bold;
 }
-.boxlinks_bottom
+.boxlinks_bottom_l
 {
-	font-size: 0.95em;
+	float: left;
+	font-size: 1.2em;
 	font-family: "LatoRegular", "Arial Unicode MS", "OpenSans", sans-serif;
-	font-color: #CC0000;
+	color: #FFFFFF;
 	text-transform: uppercase;
 	font-weight: bold;
-	margin-bottom: 3px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border-radius: 10px;
+    background: #353535;
+    padding: 10px;	
+}
+
+.prev_next_button
+{
+	font-size: 1.0em;
+	font-weight: bold;
+	vertical-align: middle;
+	background-color: #000000;
+    color: #FFFFFF;
+    text-align: center;
+	cursor: pointer;
+	border-radius: 4px;
+	border-color: #FFFFFF;
 	
+}
+.prev_next_button:hover
+{
+	background-color: #FFFFFF;
+    color: #FFFFFF;
+	border-radius: 4px;
+}
+
+.boxlinks_bottom_r
+{
+	float: right;
+	font-size: 1.2em;
+	font-family: "LatoRegular", "Arial Unicode MS", "OpenSans", sans-serif;
+	color: white;
+	text-transform: uppercase;
+	font-weight: bold;
+	margin-top: 10px;
+	margin-bottom: 8px;
+	border-radius: 10px;
+    background: #FFFFFF;
+    padding: 10px;
+	
+}
+/* xxSHxx 20180318 - adding for IGNORE USER IGNOREUSER code - notice NO FLOAT */
+/* browsers may need to be force refreshed to get this - CTRL+F5 */
+.boxlinks_button
+{
+	font-color: #FFFFFF;
+	font-size: 0.8em;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	border-radius: 4px;
+	padding: 2px;
+	display: inline-block;
+	border: 1px solid #FFFFFF;
+}
+.boxlinks_button:hover
+{
+	color: white;
+	background: #FFFFFF;
 }
 .middletext
 {
@@ -623,26 +681,27 @@ ul.reset, ul.reset li
 blockquote.bbc_standard_quote, blockquote.bbc_alternate_quote
 {
 	font-size: 0.85em;
-	color: #656565;
+	color: #FFFFFF;
 	line-height: 1.5em;
-	background-color: #F0F0F0;
-	border-top: 1px solid #656565;
-	border-bottom: 1px solid #656565;
-	border-left: 1px solid #656565;
-	border-right: 1px solid #656565;
+	background-color: #FFC0CB;
+	border-top: 1px solid #353535;
+	border-bottom: 1px solid #353535;
+	border-left: 1px solid #353535;
+	border-right: 1px solid #353535;
+	border-radius: 10px;
 	padding: 1.1em 1.1em;
 	margin: 0.1em 0 1em 0;
 	overflow: auto;
+	
 }
 
 /* Alterate blockquote stylings */
 blockquote.bbc_standard_quote
 {
-	background-color: #F0F0F0;
-}
-blockquote.bbc_alternate_quote
-{
-	background-color: #F0F0F0;
+	background-color: #151515;
+	border-radius: 15px;
+	color: pink;
+	width: fit-content;
 }
 
 /* A code block - maybe PHP ;). */
@@ -749,16 +808,16 @@ code.bbc_code
 
 .titlebg, .titlebg2, tr.titlebg th, tr.titlebg td, tr.titlebg2 td
 {
-	color: #FAFAFA;
+	color: #000000;
 	font-family: "LatoRegular", "Arial Unicode MS", "OpenSans", sans-serif;
 	font-size: 1.1em;
 	font-weight: bold;
-	background-color: #656565;
+	background-color: #FFFFF0;
 	background-repeat: repeat-x;
 }
 .catbg, .catbg2, tr.catbg td, tr.catbg2 td, tr.catbg th, tr.catbg2 th
 {
-	color: #FAFAFA;
+	color: #FFFFFF;
 	font-family: "LatoRegular", "Arial Unicode MS", "OpenSans", sans-serif;
 	font-weight: normal;
 	font-size: 1.0em;
@@ -771,11 +830,12 @@ tr.titlebg th, tr.titlebg2 th, td.titlebg, td.titlebg2, tr.catbg th, tr.catbg2 t
 }
 tr.titlebg th a:link, tr.titlebg th a:visited, tr.titlebg2 td a:link, tr.titlebg2 td a:visited
 {
-	color: #FAFAFA;
+	color: #FFFFFF;
+	border-bottom-color: #FFFFFF;
 }
 tr.catbg th a:link, tr.catbg th a:visited, tr.catbg2 td a:link, tr.catbg2 td a:visited
 {
-	color: #FAFAFA;
+	color: #FFFFFF;
 }
 .catbg select
 {
@@ -816,45 +876,45 @@ div.pagesection div.floatright input
 .approvebg
 {
 	color: #404040;
-	background-color: #FAFAFA;
+	background-color: #000000;
 }
 .approvebg2
 {
 	color: #404040;
-	background-color: #FAFAFA;
+	background-color: #000000;
 }
 
 /* Color for background of *topics* requiring approval */
 .approvetbg
 {
 	color: #404040;
-	background-color: #FAFAFA;
+	background-color: #000000;
 }
 .approvetbg2
 {
 	color: #404040;
-	background-color: #FAFAFA;
+	background-color: #000000;
 }
 
 /* Sticky topics get a different background */
 .stickybg
 {
-	background: #FAFAFA;
+	background: #353535;
 }
 .stickybg2
 {
-	background: #F2F2F2;
+	background: #353535;
 }
 
 /* Locked posts get a different shade, too! */
 .lockedbg
 {
-	background: #d4dce2;
+	background: #353535;
 	font-style: italic;
 }
 .lockedbg2
 {
-	background: #d8e1e7;
+	background: #353535;
 	font-style: italic;
 }
 
@@ -864,6 +924,7 @@ div.pagesection div.floatright input
 	overflow: auto;
 	line-height: 1.4em;
 	padding: 0.1em 0;
+	color: #FFFFFF;
 }
 
 /* All the signatures used in the forum.  If your forum users use Mozilla, Opera, or Safari, you might add max-height here ;). */
@@ -949,8 +1010,8 @@ a.moderation_link, a.moderation_link:visited
 	padding: 0.5em 1em;
 	font-size: 0.9em;
 	line-height: 1.4em;
-	background: #cc0000;
-	color: #FAFAFA;
+	background: #111111;
+	color: #000000;
 	margin: 0.2em 1px 1em 1px;
 }
 .description_board
@@ -979,6 +1040,33 @@ p.para2
 	padding: 1em 0 3.5em 0;
 	margin: 0;
 }
+
+/* Attempt at shortening URLs
+------------------------------------------------------- */
+
+.inner a 
+{
+  /* HRC */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: bottom;
+  /* HRC */
+
+  /* These are technically the same, but use both for compatibility issues */
+  overflow-wrap: break-word;
+  word-wrap: break-word; /* supposed to be obsolete but still supported */
+
+  -ms-word-break: break-all;
+  word-break: break-all;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  
+}
+
 /* AJAX notification bar
 ------------------------------------------------------- */
 #ajax_in_progress
@@ -1070,7 +1158,7 @@ h3.catbg, h3.catbg2, h3.titlebg, h4.titlebg, h4.catbg
 }
 h3.catbg a:link, h3.catbg a:visited, h4.catbg a:link, h4.catbg a:visited, h3.catbg, .table_list tbody.header td, .table_list tbody.header td a
 {
-	color: #FAFAFA;
+	color: #FFFFFF;
 	line-height: 2.3em;
 }
 h3.catbg2 a, h3.catbg2
@@ -1079,21 +1167,21 @@ h3.catbg2 a, h3.catbg2
 }
 h3.catbg a:hover, h4.catbg a:hover, .table_list tbody.header td a:hover
 {
-	color: #656565;
+	color: #FFFFF0;
 	text-decoration: none;
 }
 h3.catbg2 a:hover
 {
-	color: #656565;
+	color: #FFFFF0;
 	text-decoration: none;
 }
 h3.titlebg a, h3.titlebg, h4.titlebg, h4.titlebg a
 {
-	color: #FAFAFA;
+	color: #000000;
 }
 h3.titlebg a:hover, h4.titlebg a:hover
 {
-	color: #656565;
+	color: #FFFFF0;
 	text-decoration: none;
 }
 h3.catbg img.icon, h4.titlebg img.icon
@@ -1108,12 +1196,12 @@ h4.catbg a.toggle img
 }
 h4.catbg, h4.catbg2 , h3.catbg , h3.catbg2 , .table_list tbody.header td.catbg
 {
-	background: #cc0000;
+	background: #353535;
 	padding-right: 9px;
 }
 h4.titlebg, h3.titlebg
 {
-	background-color: #656565;
+	background-color: #FFFFF0;
 	background-repeat: repeat-x;
 	padding-right: 9px;
 }
@@ -1124,16 +1212,16 @@ h4.titlebg img.icon
 }
 div.cat_bar
 {
-	background: #cc0000;
+	background: #353535;
 	padding-left: 9px;
-	height: inherit;
+	height: 20px;
 	overflow: hidden;
 	margin-top: 7px;
 	margin-bottom: 1px;
 }
 div.title_bar
 {
-	background-color: #656565;
+	background-color: #FFFFF0;
 	background-repeat: repeat-x;
 	padding-left: 9px;
 	height: 31px;
@@ -1145,16 +1233,16 @@ div.title_bar
 
 div.roundframe div.cat_bar
 {
-	background: #cc0000;
+	background: #353535;
 	margin-bottom: 0;
 }
 div.roundframe div.cat_bar h3.catbg
 {
-	background: #cc0000;
+	background: #353535;
 }
 div.title_barIC
 {
-	background-color: #656565;
+	background-color: #353535;
 	background-repeat: repeat-x;
 	padding-left: 9px;
 	height: 31px;
@@ -1163,7 +1251,7 @@ div.title_barIC
 }
 div.title_barIC h4.titlebg
 {
-	background-color: #656565;
+	background-color: #353535;
 	background-repeat: repeat-x;
 }
 #upshrinkHeaderIC p.pminfo
@@ -1191,7 +1279,7 @@ table.table_list a.collapse
 .table_grid tr.catbg, .table_grid tr.titlebg
 {
 	font-size: 0.95em;
-	border-bottom: 1px solid #656565;
+	border-bottom: 1px solid #FFFFF0;
 }
 .table_grid tr.catbg th, .table_grid tr.titlebg th
 {
@@ -1200,23 +1288,23 @@ table.table_list a.collapse
 }
 tr.catbg th.first_th
 {
-	background: #cc0000;
+	background: #000000;
 	font-weight: normal;
 }
 tr.catbg th.last_th
 {
-	background: #cc0000;;
+	background: #000000;;
 	font-weight: normal;
 }
 tr.titlebg th.first_th
 {
-	background-color: #656565;
+	background-color: #FFFFF0;
 	background-repeat: repeat-x;
 	font-weight: normal;
 }
 tr.titlebg th.last_th
 {
-	background-color: #656565;
+	background-color: #FFFFF0;
 	background-repeat: repeat-x;
 	font-weight: normal;
 }
@@ -1254,6 +1342,7 @@ table.table_grid thead tr.catbg th
 	white-space: nowrap;
 	text-transform: uppercase;
 	font-size: 0.85em;
+	background-color: #353535;
 }
 
 /* table_grid styles for Profile > Show Permissions. */
@@ -1344,7 +1433,7 @@ table.table_grid thead tr.catbg th
 .roundframe
 {
 	padding: 0;
-	background-color: #CDCDCD;
+	background-color: #111111;
 }
 .roundframe dl, .roundframe dt, .roundframe p
 {
@@ -1407,7 +1496,7 @@ span.lowerframe span
 }
 .auto_suggest_item_hover
 {
-	background-color: #656565;
+	background-color: #FFFFF0;
 	cursor: pointer;
 	color:#404040;
 }
@@ -1498,8 +1587,8 @@ span.lowerframe span
 /* the active button */
 .dropmenu li a.active
 {
-	background: #cc0000;
-	color: #FAFAFA;
+	background: #FFFFFF;
+	color: #000000;
 	font-weight: bold;
 }
 .dropmenu li a.active span.firstlevel
@@ -1508,7 +1597,7 @@ span.lowerframe span
 /* the hover effects */
 .dropmenu li a.firstlevel:hover, .dropmenu li:hover a.firstlevel
 {
-	color: #656565;
+	color: #FFFFF0;
 	cursor: pointer;
 	text-decoration: none;
 }
@@ -1519,7 +1608,7 @@ span.lowerframe span
 .dropmenu li li a:hover, .dropmenu li li:hover>a
 {
 	background: #444;
-	color: #656565;
+	color: #FFFFF0;
 	text-decoration: none;
 }
 .dropmenu li:hover ul ul, .dropmenu li:hover ul ul ul
@@ -1597,9 +1686,8 @@ span.lowerframe span
 .buttonlist ul li a
 {
 	display: block;
-	font-size: 0.55em;
-	font-weight: bold;
-	color: #FAFAFA;
+	font-size: 0.8em;
+	color: #FFFFFF;
 	background: url(../images/maintab_back.png) repeat-x;
 	height: 23px;
 	padding: 0 9px;
@@ -1608,7 +1696,7 @@ span.lowerframe span
 }
 .buttonlist ul li a:hover
 {
-	color: #CC0000;
+	color: #FFFFFF;
 	text-decoration: none;
 	font-weight:normal;
 }
@@ -1621,14 +1709,14 @@ span.lowerframe span
 }
 .buttonlist ul li a:hover span
 {
-	color: #CC0000;
+	color: #FFFFFF;
 	text-decoration: none;
 	font-weight: normal
 }
 /* the active one */
 .buttonlist ul li a.active
 {
-	color: #FAFAFA;
+	color: #FFFFFF;
 	font-weight: normal;
 }
 .buttonlist ul li a.active span
@@ -1640,7 +1728,7 @@ span.lowerframe span
 }
 .buttonlist ul li a.active:hover
 {
-	color: #CC0000;
+	color: #FFFFFF;
 }
 .align_top ul li a, .align_bottom ul li a
 {
@@ -1685,7 +1773,7 @@ ul#navigation li
 /* the content section */
 #content_section
 {
-	background: #FAFAFA url(../images/theme/frame_repeat.png) repeat-y top left;
+	background: #000000 url(../images/theme/frame_repeat.png) repeat-y top left;
 	padding-left: 20px;
 }
 #content_section div.frame
@@ -1840,6 +1928,9 @@ div#upper_section div.news form
 #copyw span.smalltext
 {
 	font-size: 100%;
+	color: #000000;
+	font-family: "LatoRegular";
+	opacity: 0;
 }
 #footer_section div.frame
 {
@@ -1915,16 +2006,16 @@ table.table_list tbody.content td.icon
 {
 	font-weight: bold;
 	font-size: 1.1em;
-	color: #CC0000;
+	color: #FFFFFF;
 	font-family: "LatoRegular", helvetica, arial, sans-serif;
 }
 .table_list tbody.content td.info a.subject:hover
 {
-	color: #656565;
+	color: #CC0000;
 	}
 .table_list tbody.content td.children
 {
-	color: #656565;
+	color: #FFFFF0;
 	font-size: 0.85em;
 }
 p.moderators
@@ -2137,7 +2228,7 @@ div.table_frame .table_list
 #moderationbuttons
 {
 	overflow: hidden;
-	font-size: 0.75em;
+	font-size: 0.9em;
 }
 /* Events */
 .linked_events
@@ -2249,7 +2340,7 @@ div#pollmoderation
 #forumposts h3 img
 {
 	float: left;
-	margin: 4px 0.5em 0 0;
+	margin: 0 0.5em 0 0;
 }
 #forumposts h3.catbg
 {
@@ -2298,7 +2389,7 @@ p#whoisviewing
 }
 .poster h4, .poster h4 a
 {
-	color: #CC0000;
+	color: #FFFFFF;
 }
 .poster ul ul
 {
@@ -2359,20 +2450,20 @@ div.quickbuttons_wrap
 	float: left;
 	cursor: pointer;
 	border-radius: 4px;
-	border-color: #CC0000;
+	border-color: #FFFFFF;
 }
 
 ul.quickbuttons
 {
 	text-transform: uppercase;
-	font-color: #CC0000;
+	font-color: #FFFFFF;
 	font-family: "LatoRegular", "Arial Unicode MS", "OpenSans", verdana, sans-serif;
-	font-size: 1.0em;
+	font-size: 0.8em;
 	text-align: center;
 	clear: right;
 	float: right;
 	vertical-align: middle;
-	background-color: #FAFAFA;
+	background-color: #000000;
 }
 ul.quickbuttons li
 {
@@ -2382,7 +2473,7 @@ ul.quickbuttons li
 	font-size: 0.8em;
 	float: right;
 	display: inline-block;
-	font-color: #CC0000;
+	font-color: #FFFFFF;
 	margin-top: 2px;
 	margin-bottom: 2px;
 	margin-right: 6px;
@@ -2396,22 +2487,22 @@ ul.quickbuttons li a
 	font-size: 0.8em;
 	float: right;
 	display: inline-block;
-	border: 1px solid #CC0000;
-	font-color: #CC0000;
+	border: 1px solid #FFFFFF;
+	font-color: #FFFFFF;
 	margin-top: 2px;
-	margin-right: 8px;
+	margin-right: 4px;
 	margin-bottom: 2px;
 	border-radius: 4px;
 	padding-top: 4px;
 	padding-bottom: 4px;
-	padding-left: 8px;
 	padding-right: 8px;
+	padding-left: 8px;
 
 }
 ul.quickbuttons a:hover
 {
 	color: white;
-	background: #CC0000;
+	background: #353535;
 
 }
 ul.quickbuttons li.quote_button
@@ -2459,12 +2550,14 @@ ul.quickbuttons li.inline_mod_check
 {
 	margin-top: 0.5em;
 	clear: right;
+	color: white:
 }
 .inner
 {
 	padding: 1em 1em 2px 0;
 	margin: 0 1em 0 0;
 	border-top: 1px solid #EAEAEA;
+	color: #FFFFFF:
 }
 img.smiley
 {
@@ -2963,7 +3056,7 @@ dl.register_form dd
 {
 	padding: 4px;
 	width: 32ex;
-	background-color: #FAFAFA;
+	background-color: #000000;
 	color: #404040;
 	margin-left: 5ex;
 	border: 1px solid #404040;
@@ -2971,11 +3064,11 @@ dl.register_form dd
 
 .valid_input
 {
-	background-color: #f5FAFAFA0;
+	background-color: #f50000000;
 }
 .invalid_input
 {
-	background-color: #FAFAFA0f0;
+	background-color: #0000000f0;
 }
 
 /* Styles for maintenance mode.
@@ -3068,6 +3161,7 @@ tr.titlebg td
 tr.windowbg td, tr.windowbg2 td, tr.approvebg td, tr.highlight2 td
 {
 	padding: 0.3em 0.7em;
+	color: #959595;
 }
 #credits p
 {
@@ -3096,7 +3190,7 @@ tr.windowbg td, tr.windowbg2 td, tr.approvebg td, tr.highlight2 td
 }
 .topic_table table thead
 {
-	border-bottom: 1px solid #656565;
+	border-bottom: 1px solid #FFFFF0;
 }
 /* the subject column */
 .topic_table td
@@ -3347,8 +3441,8 @@ div#profile_error span
 
 div#profile_success
 {
-	border-color: #cc0000;
-	color: #cc0000;
+	border-color: #FFFFFF;
+	color: #FFFFFF;
 	background: #efe;
 }
 
@@ -3476,7 +3570,40 @@ div#profile_success
 	padding-top: 12px;
 	margin-top: 6px;
 	overflow: auto;
+	color: #FFFFFF;
+	
+
+  	/*HRC*/
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: bottom;
+
+  /* These are technically the same, but use both for compatibility issues */
+  overflow-wrap: break-word;
+  word-wrap: break-word; /* supposed to be obsolete but still supported */
+
+  -ms-word-break: break-all;
+  word-break: break-all;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+
 }
+
+/* 
+    this is a placeholder for now but this class definition is referenced in URLs as 
+    class="bbc_link" so it should exist - there are other bbc_* sections this can be 	placed with
+*/
+.bbc_link:hover
+{
+ 	/* HRC */
+	text-decoration: none;
+	/* background: #66ff66; */
+}
+
 
 .core_posts
 {
@@ -3774,7 +3901,7 @@ dl.addrules dt.floatleft
 /* Used to indicate the current day in the grid. */
 .calendar_today
 {
-	background-color: #FAFAFA;
+	background-color: #000000;
 }
 
 #month_grid
@@ -3986,19 +4113,19 @@ span.hidelink
 /* Normal, standard links. */
 a:link
 {
-	color: #CC0000;
+	color: #FFFFFF;
 	text-decoration: none;
 	cursor: pointer;
 }
 a:visited
 {
-	color: #CC0000;
+	color: #FFFFFF;
 	text-decoration: none;
 	cursor: pointer;
 }
 a:hover
 {
-	color: #656565;
+	color: #CC0000;
 	text-decoration: none;
 	cursor: pointer;
 }
@@ -4006,18 +4133,19 @@ a:hover
 /* Navigation links - for the link tree. */
 .nav, .nav:link, .nav:visited
 {
-	color: #CC0000;
+	font-color: #000000;
 	text-decoration: none;
 	font-family: "LatoRegular", "Arial Unicode MS", "OpenSans", sans-serif;
 	text-transform: uppercase;
 	font-size: 0.8em;
 	cursor: pointer;
+	background-color: #000000;
 	/*margin-top: 1.6ex;
 	margin-bottom: 2ex;*/
 }
 a.nav:hover
 {
-	color: #656565;
+	color: #CC0000;
 	cursor: pointer;
 }
 
@@ -4030,15 +4158,16 @@ table
 /* By default (td, body..) use verdana in black. */
 body, td, th , tr
 {
-	color: #656565;
-	font-size: 108%;
+	color: #FFFFFF;
+	background: #000000;
+	font-size: 0.95em;
 	font-family: "LatoRegular", "OpenSans", "Tahoma", sans-serif;
 	-webkit-font-smoothing: subpixel-antialiased;do it
 }
 /* The main body of the entire forum. */
 body
 {
-	background-color: #FAFAFA;
+	background-color: #000000;
 	margin: 0 0 0 0;
 	padding: 0;
 }
@@ -4048,25 +4177,25 @@ body
 /* Input boxes - just a bit smaller than normal so they align well. */
 input, textarea, button
 {
-	background: #FAFAFA;
+	background: #000000;
 	font-family: "LatoRegular", "Arial Unicode MS", "OpenSans", verdana, sans-serif;
 	border: solid 1px #EAEAEA;
  }
 input
 {
 	font-size: 0.85em;
-	color: #404040;
+	color: #FFFFFF;
 }
 button
 {
 	font-size: 0.85em;
-	color: #CC0000;
+	color: #FFFFFF;
 	text-transform: uppercase;
 }
 textarea
 {
 	font-size: 1em;
-	color: #404040;
+	color: #FFFFFF;
 }
 
 /* All input elements that are checkboxes or radio buttons. */
@@ -4079,8 +4208,8 @@ select
 {
 	font-size: 90%;
 	font-weight: normal;
-	background: #FAFAFA;
-	color:#404040;
+	background: #000000;
+	color:#FFFFFF;
 	font-family: verdana, sans-serif;
 	border: solid 1px #404040;
 }
@@ -4171,19 +4300,19 @@ border: 0;
 /* Alternating backgrounds for posts, and several other sections of the forum. */
 .windowbg
 {
-	color: #404040;
-	background-color: #FAFAFA;
+	color: #808080;
+	background-color: #000000;
 	font-family: "LatoRegular", "OpenSans", Tahoma, sans-serif;
 }
 .windowbg2
 {
-	color: #404040;
-	background-color: #FAFAFA;
+	color: #858585;
+	background-color: #000000;
 }
 .windowbg3
 {
 	color: #404040;
-	background-color: #FAFAFA;
+	background-color: #000000;
 }
 /* the today container in calendar */
 .calendar_today
@@ -4213,17 +4342,19 @@ border: 0;
 {
 	font-weight: bold;
 	font-style: normal;
+	color: #FFFFFF;
 }
 
 .titlebg a:hover
 {
-	color: #656565;
+	color: #FFFFF0;
 }
 /* same as titlebg, but used where bold text is not needed */
 .titlebg2 a:link, .titlebg2 a:visited
 {
 	font-style: normal;
 	text-decoration: underline;
+	color: #000000;
 }
 
 .titlebg2 a:hover
@@ -4235,8 +4366,8 @@ border: 0;
 .catbg and .catbg2 is for boardindex, while .catbg3 is for messageindex and display headers*/
 .catbg , tr.catbg td , .catbg3 , tr.catbg3 td
 {
-	background-color: #cc0000;
-	color: #FAFAFA;
+	background-color: #000000;
+	color: #000000;
 	text-transform: uppercase;
 	font-size: 1.0em;
 	font-family: "LatoRegular", "OpenSans", Tahoma, sans-serif;
@@ -4247,7 +4378,7 @@ border: 0;
 {
 	background-image: url(../images/catbg2.png);
 	background-color: #A1BFD9;
-	color: #FAFAFA;
+	color: #000000;
 	padding-left: 10px;
 	padding-right: 10px;
 }
@@ -4264,17 +4395,17 @@ border: 0;
 .catbg3, tr.catbg3 td, .catbg3 a:link, .catbg3 a:visited
 {
 	font-size: 95%;
-	color: white;
+	color: black;
 	text-decoration: none;
 }
 .catbg a:link, .catbg a:visited , .catbg2 a:link, .catbg2 a:visited
 {
-	color: white;
+	color: #FFFFFF;
 	text-decoration: none;
 }
 .catbg a:hover, .catbg2 a:hover, .catbg3 a:hover
 {
-	color: #CC0000;
+	color: #FFFFFF;
 }
 /* This is used for tables that have a grid/border background color (such as the topic listing.) */
 .bordercolor
@@ -4293,6 +4424,7 @@ border: 0;
 .smalltext
 {
 	font-size: 0.85em;
+	color: #959595;
 }
 .middletext
 {
@@ -4349,7 +4481,7 @@ color: red;
 }
 .countdown
 {
-	color: #cc0000;
+	color: #FFFFFF;
 	text-decoration: none;
 	font-size: 0.9em;
 	text-transform: uppercase;
@@ -4396,14 +4528,14 @@ color: red;
 /* how links behave in main tab. */
 .maintab_back a:link , .maintab_back a:visited, .maintab_active_back a:link , .maintab_active_back a:visited
 {
-	color: white;
+	color: #FFFFFF;
 	text-decoration: none;
 }
 
 .maintab_back a:hover, .maintab_active_back a:hover
 {
-	color: #CC0000;
-	text-decoration: none;
+	color: #FFFFFF;
+	text-decoration: underline;
 }
 /* definitions for the mirror tab */
 .mirrortab_first, .mirrortab_back, .mirrortab_last, .mirrortab_active_first, .mirrortab_active_back, .mirrortab_active_last
@@ -4463,17 +4595,16 @@ color: red;
 
 .mirrortab_back a:hover, .mirrortab_active_back a:hover
 {
-	color: #CC0000;
+	color: #FFFFFF;
 	text-decoration: none;
 }
 #mainmenu
 {
 	position: absolute;
-	font-size: 0.7em;
 	z-index: 1;
 	left: 30px;
 	top: 70px;
-	line-height: 1.7em;
+	line-height: 1.8em;
 	min-width: 670px;
 	font-weight: bold;
 }
@@ -4483,6 +4614,7 @@ color: red;
 	left: 20px;
 	top: 155px;
 	-webkit-text-size-adjust: none;
+	font-color: #000000;
 }
 #pmbox
 {
@@ -4531,7 +4663,7 @@ color: red;
 }
 .logotext a:link, .logotext a:visited
 {
-	color: #CC0000;
+	color: #FFFFFF;
 }
 #picture_choose
 {
@@ -4578,6 +4710,31 @@ color: red;
 }
 #copyw a
 {
-	color: #CC0000;
+	font-size: 100%;
+	color: #000000;
 	font-family: "LatoRegular";
+	opacity: 0;
+}
+
+/* The "like" button.
+------------------------------------------------------- */
+
+.like_button
+
+{
+	background: none;
+	border: 0px;
+	cursor: pointer;
+	font-size: 0.85em;
+	color: #FFFFFF;
+	text-transform: uppercase;
+	-webkit-transition: -webkit-transform .8s ease-in-out;
+    transition: transform .8s ease-in-out;
+}
+
+.like_button:hover
+
+{
+	-webkit-transform: rotate(-90deg);
+	transform: rotate(-90deg);
 }

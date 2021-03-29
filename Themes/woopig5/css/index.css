@@ -682,11 +682,11 @@ blockquote.bbc_standard_quote, blockquote.bbc_alternate_quote
 	font-size: 0.85em;
 	color: #656565;
 	line-height: 1.5em;
-	background-color: #F0F0F0;
 	border-top: 1px solid #656565;
 	border-bottom: 1px solid #656565;
 	border-left: 1px solid #656565;
 	border-right: 1px solid #656565;
+	background: #050505;
 	padding: 1.1em 1.1em;
 	margin: 0.1em 0 1em 0;
 	overflow: auto;
@@ -696,6 +696,9 @@ blockquote.bbc_standard_quote, blockquote.bbc_alternate_quote
 blockquote.bbc_standard_quote
 {
 	background-color: #F0F0F0;
+	border-radius: 15px;
+	color: #656565;
+	width: fit-content;
 }
 blockquote.bbc_alternate_quote
 {

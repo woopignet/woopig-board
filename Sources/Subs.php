@@ -922,6 +922,10 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 		$bbc_codes = array();
 	}
 
+	// Embed Twitter Tweets.
+	if (!empty($message))
+		$message = preg_replace("/https?:\/\/(www.)?twitter.com\/[a-zA-Z0-9_]+\/status\/(\d+)/i", "[tweet]$2[/tweet]", $message);
+
 	// Sift out the bbc for a performance improvement.
 	if (empty($bbc_codes) || $message === false || !empty($parse_tags))
 	{
@@ -1398,6 +1402,26 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 				'tag' => 'pre',
 				'before' => '<pre>',
 				'after' => '</pre>',
+			),
+			array(
+				'tag' => 'tweet',
+				'type' => 'unparsed_content',
+				'content' => '$1',
+				'validate' => create_function('&$tag, &$data, $disabled', '
+
+					global $sourcedir, $txt;
+					require_once($sourcedir . \'/Subs-Package.php\');
+
+					$tweet = false;
+					if (isset($data) && is_numeric($data))
+						$tweet = json_decode(fetch_web_data(\'https://api.twitter.com/1/statuses/oembed.json?id=\'.$data. \'\'), true);
+					if (is_array($tweet) && !empty($tweet))
+						$data = $tweet[\'html\'];
+					else
+						$data = $txt[\'invalid_tweet\'];
+				'),
+				'block_level' => true,
+				'disabled_content' => '$1'
 			),
 			array(
 				'tag' => 'quote',
@@ -2440,7 +2464,19 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 	// Cleanup whitespace.
 	$message = strtr($message, array('  ' => ' &nbsp;', "\r" => '', "\n" => '<br />', '<br /> ' => '<br />&nbsp;', '&#13;' => "\n"));
 
-	// Cache the output if it took some time...
+	
+		// Auto Embed Media Pro
+		global $sourcedir, $modSettings;
+		if (file_exists($sourcedir . '/AutoEmbedMediaPro2.php'))
+		{
+		
+				require_once($sourcedir . '/AutoEmbedMediaPro2.php');
+				$message = MediaProProcess($message);
+		    
+		}
+
+		// End Auto Embed Media Pro
+// Cache the output if it took some time...
 	if (isset($cache_key, $cache_t) && array_sum(explode(' ', microtime())) - array_sum(explode(' ', $cache_t)) > 0.05)
 		cache_put_data($cache_key, $message, 240);
 
@@ -4073,6 +4109,13 @@ function setupMenuContext()
 						'show' => allowedTo('calendar_post'),
 						'is_last' => true,
 					),
+				),
+			),
+			'recenttopics' => array(
+				'title' => $txt['recent_topics'],
+				'href' => $scripturl . '?action=recenttopics',
+				'show' => true,
+				'sub_buttons' => array(
 				),
 			),
 			'mlist' => array(

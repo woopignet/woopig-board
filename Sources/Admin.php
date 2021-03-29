@@ -199,12 +199,36 @@ function AdminMain()
 						// Mod Authors for a "ADD AFTER" on this line. Ensure you end your change with a comma. For example:
 						// 'shout' => array($txt['shout']),
 						// Note the comma!! The setting with automatically appear with the first mod to be added.
+						'recenttopics' => array($txt['recent_topics']),
 					),
 				),
 			),
 		),
+		
+		'mediapro' => array(
+			'title' => $txt['mediapro_admin'],
+			'permission' => array('admin_forum'),
+			'areas' => array(
+				'mediapro' => array(
+					'label' => $txt['mediapro_settings'],
+					'file' => 'AutoEmbedMediaPro2.php',
+					'function' => 'MediaProMain',
+					'custom_url' => $scripturl . '?action=admin;area=mediapro;sa=settings;sesc=' . $sc,
+					'icon' => 'server.gif',
+					'permission' => array('admin_forum'),
+					'subsections' => array(
+						'settings' => array($txt['mediapro_settings']),
+						'copyright' => array($txt['mediapro_copyremove']),
+					),
+				),
+	
+			),
+		),
+
 		'layout' => array(
 			'title' => $txt['layout_controls'],
+				
+
 			'permission' => array('manage_boards', 'admin_forum', 'manage_smileys', 'manage_attachments', 'moderate_forum'),
 			'areas' => array(
 				'manageboards' => array(
@@ -769,6 +793,7 @@ function AdminSearchInternal()
 		array('ModifyModerationSettings', 'area=securitysettings;sa=moderation'),
 		array('ModifyGeneralModSettings', 'area=modsettings;sa=general'),
 		// Mod authors if you want to be "real freaking good" then add any setting pages for your mod BELOW this line!
+		array('ModifyRecentTopics', 'area=modsettings;sa=recenttopics'),
 		array('ManageAttachmentSettings', 'area=manageattachments;sa=attachments'),
 		array('ManageAvatarSettings', 'area=manageattachments;sa=avatars'),
 		array('ModifyCalendarSettings', 'area=managecalendar;sa=settings'),
