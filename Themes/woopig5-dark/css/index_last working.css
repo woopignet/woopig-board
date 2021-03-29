@@ -458,7 +458,7 @@ em
 	width: 100%;
 	min-width: 670px;
 	height: 1.8em;
-	background-color: #353535;
+	background-color: #000000;
 	z-index: -1;
 	font-color: #FFFFFF;
 }
@@ -681,27 +681,26 @@ ul.reset, ul.reset li
 blockquote.bbc_standard_quote, blockquote.bbc_alternate_quote
 {
 	font-size: 0.85em;
-	color: #FFFFFF;
+	color: #FFFFF0;
 	line-height: 1.5em;
-	background-color: #FFC0CB;
-	border-top: 1px solid #353535;
-	border-bottom: 1px solid #353535;
-	border-left: 1px solid #353535;
-	border-right: 1px solid #353535;
-	border-radius: 10px;
+	background-color: #000000;
+	border-top: 1px solid #CC0000;
+	border-bottom: 1px solid #CC0000;
+	border-left: 1px solid #CC0000;
+	border-right: 1px solid #CC0000;
 	padding: 1.1em 1.1em;
 	margin: 0.1em 0 1em 0;
 	overflow: auto;
-	
 }
 
 /* Alterate blockquote stylings */
 blockquote.bbc_standard_quote
 {
-	background-color: #151515;
-	border-radius: 15px;
-	color: pink;
-	width: fit-content;
+	background-color: #000000;
+}
+blockquote.bbc_alternate_quote
+{
+	background-color: #000000;
 }
 
 /* A code block - maybe PHP ;). */
@@ -899,7 +898,7 @@ div.pagesection div.floatright input
 /* Sticky topics get a different background */
 .stickybg
 {
-	background: #353535;
+	background: #000000;
 }
 .stickybg2
 {
@@ -909,12 +908,12 @@ div.pagesection div.floatright input
 /* Locked posts get a different shade, too! */
 .lockedbg
 {
-	background: #353535;
+	background: #d4dce2;
 	font-style: italic;
 }
 .lockedbg2
 {
-	background: #353535;
+	background: #d8e1e7;
 	font-style: italic;
 }
 
@@ -2011,7 +2010,7 @@ table.table_list tbody.content td.icon
 }
 .table_list tbody.content td.info a.subject:hover
 {
-	color: #CC0000;
+	color: #FFFFF0;
 	}
 .table_list tbody.content td.children
 {
@@ -3161,7 +3160,7 @@ tr.titlebg td
 tr.windowbg td, tr.windowbg2 td, tr.approvebg td, tr.highlight2 td
 {
 	padding: 0.3em 0.7em;
-	color: #959595;
+	color: #FFFFFF;
 }
 #credits p
 {
@@ -4145,7 +4144,7 @@ a:hover
 }
 a.nav:hover
 {
-	color: #CC0000;
+	color: #FFFFF0;
 	cursor: pointer;
 }
 
@@ -4342,7 +4341,7 @@ border: 0;
 {
 	font-weight: bold;
 	font-style: normal;
-	color: #FFFFFF;
+	color: #000000;
 }
 
 .titlebg a:hover
@@ -4400,7 +4399,7 @@ border: 0;
 }
 .catbg a:link, .catbg a:visited , .catbg2 a:link, .catbg2 a:visited
 {
-	color: #FFFFFF;
+	color: black;
 	text-decoration: none;
 }
 .catbg a:hover, .catbg2 a:hover, .catbg3 a:hover
@@ -4535,7 +4534,7 @@ color: red;
 .maintab_back a:hover, .maintab_active_back a:hover
 {
 	color: #FFFFFF;
-	text-decoration: underline;
+	text-decoration: none;
 }
 /* definitions for the mirror tab */
 .mirrortab_first, .mirrortab_back, .mirrortab_last, .mirrortab_active_first, .mirrortab_active_back, .mirrortab_active_last

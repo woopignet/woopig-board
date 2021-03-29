@@ -458,9 +458,8 @@ em
 	width: 100%;
 	min-width: 670px;
 	height: 1.8em;
-	background-color: #353535;
+	background-color: #000000;
 	z-index: -1;
-	font-color: #FFFFFF;
 }
 .topRrepeat
 {
@@ -565,7 +564,7 @@ em
 	margin-top: 10px;
 	margin-bottom: 10px;
 	border-radius: 10px;
-    background: #353535;
+    background: #FFFFFF;
     padding: 10px;	
 }
 
@@ -681,27 +680,26 @@ ul.reset, ul.reset li
 blockquote.bbc_standard_quote, blockquote.bbc_alternate_quote
 {
 	font-size: 0.85em;
-	color: #FFFFFF;
+	color: #FFFFF0;
 	line-height: 1.5em;
-	background-color: #FFC0CB;
-	border-top: 1px solid #353535;
-	border-bottom: 1px solid #353535;
-	border-left: 1px solid #353535;
-	border-right: 1px solid #353535;
-	border-radius: 10px;
+	background-color: #000000;
+	border-top: 1px solid #FFFFF0;
+	border-bottom: 1px solid #FFFFF0;
+	border-left: 1px solid #FFFFF0;
+	border-right: 1px solid #FFFFF0;
 	padding: 1.1em 1.1em;
 	margin: 0.1em 0 1em 0;
 	overflow: auto;
-	
 }
 
 /* Alterate blockquote stylings */
 blockquote.bbc_standard_quote
 {
-	background-color: #151515;
-	border-radius: 15px;
-	color: pink;
-	width: fit-content;
+	background-color: #000000;
+}
+blockquote.bbc_alternate_quote
+{
+	background-color: #000000;
 }
 
 /* A code block - maybe PHP ;). */
@@ -817,7 +815,7 @@ code.bbc_code
 }
 .catbg, .catbg2, tr.catbg td, tr.catbg2 td, tr.catbg th, tr.catbg2 th
 {
-	color: #FFFFFF;
+	color: #000000;
 	font-family: "LatoRegular", "Arial Unicode MS", "OpenSans", sans-serif;
 	font-weight: normal;
 	font-size: 1.0em;
@@ -830,12 +828,11 @@ tr.titlebg th, tr.titlebg2 th, td.titlebg, td.titlebg2, tr.catbg th, tr.catbg2 t
 }
 tr.titlebg th a:link, tr.titlebg th a:visited, tr.titlebg2 td a:link, tr.titlebg2 td a:visited
 {
-	color: #FFFFFF;
-	border-bottom-color: #FFFFFF;
+	color: #000000;
 }
 tr.catbg th a:link, tr.catbg th a:visited, tr.catbg2 td a:link, tr.catbg2 td a:visited
 {
-	color: #FFFFFF;
+	color: #000000;
 }
 .catbg select
 {
@@ -899,22 +896,22 @@ div.pagesection div.floatright input
 /* Sticky topics get a different background */
 .stickybg
 {
-	background: #353535;
+	background: #000000;
 }
 .stickybg2
 {
-	background: #353535;
+	background: #F2F2F2;
 }
 
 /* Locked posts get a different shade, too! */
 .lockedbg
 {
-	background: #353535;
+	background: #d4dce2;
 	font-style: italic;
 }
 .lockedbg2
 {
-	background: #353535;
+	background: #d8e1e7;
 	font-style: italic;
 }
 
@@ -1010,7 +1007,7 @@ a.moderation_link, a.moderation_link:visited
 	padding: 0.5em 1em;
 	font-size: 0.9em;
 	line-height: 1.4em;
-	background: #111111;
+	background: #FFFFFF;
 	color: #000000;
 	margin: 0.2em 1px 1em 1px;
 }
@@ -1158,7 +1155,7 @@ h3.catbg, h3.catbg2, h3.titlebg, h4.titlebg, h4.catbg
 }
 h3.catbg a:link, h3.catbg a:visited, h4.catbg a:link, h4.catbg a:visited, h3.catbg, .table_list tbody.header td, .table_list tbody.header td a
 {
-	color: #FFFFFF;
+	color: #000000;
 	line-height: 2.3em;
 }
 h3.catbg2 a, h3.catbg2
@@ -1196,7 +1193,7 @@ h4.catbg a.toggle img
 }
 h4.catbg, h4.catbg2 , h3.catbg , h3.catbg2 , .table_list tbody.header td.catbg
 {
-	background: #353535;
+	background: #FFFFFF;
 	padding-right: 9px;
 }
 h4.titlebg, h3.titlebg
@@ -1212,7 +1209,7 @@ h4.titlebg img.icon
 }
 div.cat_bar
 {
-	background: #353535;
+	background: #FFFFFF;
 	padding-left: 9px;
 	height: 20px;
 	overflow: hidden;
@@ -1233,16 +1230,16 @@ div.title_bar
 
 div.roundframe div.cat_bar
 {
-	background: #353535;
+	background: #000000;
 	margin-bottom: 0;
 }
 div.roundframe div.cat_bar h3.catbg
 {
-	background: #353535;
+	background: #FFFFFF;
 }
 div.title_barIC
 {
-	background-color: #353535;
+	background-color: #FFFFF0;
 	background-repeat: repeat-x;
 	padding-left: 9px;
 	height: 31px;
@@ -1251,7 +1248,7 @@ div.title_barIC
 }
 div.title_barIC h4.titlebg
 {
-	background-color: #353535;
+	background-color: #FFFFF0;
 	background-repeat: repeat-x;
 }
 #upshrinkHeaderIC p.pminfo
@@ -1288,12 +1285,12 @@ table.table_list a.collapse
 }
 tr.catbg th.first_th
 {
-	background: #000000;
+	background: #FFFFFF;
 	font-weight: normal;
 }
 tr.catbg th.last_th
 {
-	background: #000000;;
+	background: #FFFFFF;;
 	font-weight: normal;
 }
 tr.titlebg th.first_th
@@ -1342,7 +1339,6 @@ table.table_grid thead tr.catbg th
 	white-space: nowrap;
 	text-transform: uppercase;
 	font-size: 0.85em;
-	background-color: #353535;
 }
 
 /* table_grid styles for Profile > Show Permissions. */
@@ -1433,7 +1429,7 @@ table.table_grid thead tr.catbg th
 .roundframe
 {
 	padding: 0;
-	background-color: #111111;
+	background-color: #CDCDCD;
 }
 .roundframe dl, .roundframe dt, .roundframe p
 {
@@ -1716,7 +1712,7 @@ span.lowerframe span
 /* the active one */
 .buttonlist ul li a.active
 {
-	color: #FFFFFF;
+	color: #000000;
 	font-weight: normal;
 }
 .buttonlist ul li a.active span
@@ -2011,7 +2007,7 @@ table.table_list tbody.content td.icon
 }
 .table_list tbody.content td.info a.subject:hover
 {
-	color: #CC0000;
+	color: #FFFFF0;
 	}
 .table_list tbody.content td.children
 {
@@ -2502,7 +2498,7 @@ ul.quickbuttons li a
 ul.quickbuttons a:hover
 {
 	color: white;
-	background: #353535;
+	background: #FFFFFF;
 
 }
 ul.quickbuttons li.quote_button
@@ -3161,7 +3157,7 @@ tr.titlebg td
 tr.windowbg td, tr.windowbg2 td, tr.approvebg td, tr.highlight2 td
 {
 	padding: 0.3em 0.7em;
-	color: #959595;
+	color: #FFFFFF;
 }
 #credits p
 {
@@ -3570,8 +3566,6 @@ div#profile_success
 	padding-top: 12px;
 	margin-top: 6px;
 	overflow: auto;
-	color: #FFFFFF;
-	
 
   	/*HRC*/
   overflow: hidden;
@@ -4119,13 +4113,13 @@ a:link
 }
 a:visited
 {
-	color: #FFFFFF;
+	color: #000000;
 	text-decoration: none;
 	cursor: pointer;
 }
 a:hover
 {
-	color: #CC0000;
+	color: #000000;
 	text-decoration: none;
 	cursor: pointer;
 }
@@ -4139,13 +4133,12 @@ a:hover
 	text-transform: uppercase;
 	font-size: 0.8em;
 	cursor: pointer;
-	background-color: #000000;
 	/*margin-top: 1.6ex;
 	margin-bottom: 2ex;*/
 }
 a.nav:hover
 {
-	color: #CC0000;
+	color: #FFFFF0;
 	cursor: pointer;
 }
 
@@ -4158,8 +4151,7 @@ table
 /* By default (td, body..) use verdana in black. */
 body, td, th , tr
 {
-	color: #FFFFFF;
-	background: #000000;
+	color: #FFFFF0;
 	font-size: 0.95em;
 	font-family: "LatoRegular", "OpenSans", "Tahoma", sans-serif;
 	-webkit-font-smoothing: subpixel-antialiased;do it
@@ -4184,7 +4176,7 @@ input, textarea, button
 input
 {
 	font-size: 0.85em;
-	color: #FFFFFF;
+	color: #404040;
 }
 button
 {
@@ -4195,7 +4187,7 @@ button
 textarea
 {
 	font-size: 1em;
-	color: #FFFFFF;
+	color: #404040;
 }
 
 /* All input elements that are checkboxes or radio buttons. */
@@ -4209,7 +4201,7 @@ select
 	font-size: 90%;
 	font-weight: normal;
 	background: #000000;
-	color:#FFFFFF;
+	color:#404040;
 	font-family: verdana, sans-serif;
 	border: solid 1px #404040;
 }
@@ -4300,13 +4292,13 @@ border: 0;
 /* Alternating backgrounds for posts, and several other sections of the forum. */
 .windowbg
 {
-	color: #808080;
+	color: #404040;
 	background-color: #000000;
 	font-family: "LatoRegular", "OpenSans", Tahoma, sans-serif;
 }
 .windowbg2
 {
-	color: #858585;
+	color: #404040;
 	background-color: #000000;
 }
 .windowbg3
@@ -4342,7 +4334,7 @@ border: 0;
 {
 	font-weight: bold;
 	font-style: normal;
-	color: #FFFFFF;
+	color: #000000;
 }
 
 .titlebg a:hover
@@ -4366,7 +4358,7 @@ border: 0;
 .catbg and .catbg2 is for boardindex, while .catbg3 is for messageindex and display headers*/
 .catbg , tr.catbg td , .catbg3 , tr.catbg3 td
 {
-	background-color: #000000;
+	background-color: #FFFFFF;
 	color: #000000;
 	text-transform: uppercase;
 	font-size: 1.0em;
@@ -4400,7 +4392,7 @@ border: 0;
 }
 .catbg a:link, .catbg a:visited , .catbg2 a:link, .catbg2 a:visited
 {
-	color: #FFFFFF;
+	color: black;
 	text-decoration: none;
 }
 .catbg a:hover, .catbg2 a:hover, .catbg3 a:hover
@@ -4528,14 +4520,14 @@ color: red;
 /* how links behave in main tab. */
 .maintab_back a:link , .maintab_back a:visited, .maintab_active_back a:link , .maintab_active_back a:visited
 {
-	color: #FFFFFF;
+	color: black;
 	text-decoration: none;
 }
 
 .maintab_back a:hover, .maintab_active_back a:hover
 {
 	color: #FFFFFF;
-	text-decoration: underline;
+	text-decoration: none;
 }
 /* definitions for the mirror tab */
 .mirrortab_first, .mirrortab_back, .mirrortab_last, .mirrortab_active_first, .mirrortab_active_back, .mirrortab_active_last
