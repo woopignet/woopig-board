@@ -178,6 +178,7 @@ function ModifyModSettings()
 	$subActions = array(
 		'general' => 'ModifyGeneralModSettings',
 		// Mod authors, once again, if you have a whole section to add do it AFTER this line, and keep a comma at the end.
+		'recenttopics' => 'ModifyRecentTopics',
 	);
 
 	// Make it easier for mods to add new areas.
@@ -2105,6 +2106,31 @@ function ModifyGeneralModSettings($return_config = false)
 	}
 
 	// This line is to help mod authors do a search/add after if you want to add something here. Keyword: RED INK IS FOR TEACHERS AND THOSE WHO LIKE PAIN!
+	prepareDBSettingContext($config_vars);
+}
+// Modify AJAX Recent Topics
+function ModifyRecentTopics($return_config = false)
+{
+	global $txt, $scripturl, $context, $modSettings, $sc, $modSettings;
+
+	$config_vars = array(
+		array('int', 'number_recent_topics'),
+		array('int', 'number_recent_topics_interval', 3, 'subtext' => $txt['number_recent_topics_interval_desc']),
+	);
+
+	if ($return_config)
+		return $config_vars;
+
+	$context['post_url'] = $scripturl . '?action=admin;area=modsettings;save;sa=recenttopics';
+	$context['settings_title'] = $txt['recent_topics'];
+
+	if (isset($_GET['save']))
+	{
+		checkSession();
+		saveDBSettings($config_vars);
+		redirectexit('action=admin;area=modsettings;sa=recenttopics');
+	}
+
 	prepareDBSettingContext($config_vars);
 }
 

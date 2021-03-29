@@ -461,6 +461,23 @@ function ob_sessrewrite($buffer)
 {
 	global $scripturl, $modSettings, $user_info, $context;
 
+	
+	// Auto Embed Media Pro
+	
+	$showInfo = MediaProCheckInfo();
+			    
+	if ($showInfo == true)
+    	{
+		if (!isset($autoMediaLoaded))
+		{
+		$buffer = preg_replace('~(, Simple Machines LLC</a>)~', ', Simple Machines LLC</a><br /><a href="https://www.createaforum.com" target="_blank">Simple Audio Video Embedder</a>', $buffer);
+		$buffer = preg_replace('~(class="new_win">Simple Machines</a>)~', 'class="new_win">Simple Machines</a><br /><a href="https://www.createaforum.com" target="_blank">Simple Audio Video Embedder</a>', $buffer);
+		$autoMediaLoaded = 1;
+		}
+	}
+	
+	// End Auto Embed Media Pro
+			
 	// If $scripturl is set to nothing, or the SID is not defined (SSI?) just quit.
 	if ($scripturl == '' || !defined('SID'))
 		return $buffer;
@@ -513,4 +530,29 @@ function pathinfo_insert__preg_callback($matches)
 	global $scripturl;
 	return '"' . $scripturl . "/" . strtr($matches[1], '&;=', '//,') . ".html" . (isset($matches[2]) ? $matches[2] : "") . '"';
 }
+
+function MediaProCheckInfo()
+{
+    global $modSettings, $boardurl;
+    
+    if (isset($modSettings['mediapro_copyrightkey']))
+    {
+        $m = 36;
+        if (!empty($modSettings['mediapro_copyrightkey']))
+        {
+            if ($modSettings['mediapro_copyrightkey'] == sha1($m . '-' . $boardurl))
+            {
+                return false;
+            }
+            else
+                return true;
+        }
+    }
+    
+    return true;
+}
+
+
+		
+
 ?>

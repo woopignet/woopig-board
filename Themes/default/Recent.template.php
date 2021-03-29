@@ -442,5 +442,212 @@ function template_replies()
 		</div>
 	</div>';
 }
+function template_recent()
+{
+	global $context, $txt, $modSettings, $scripturl, $settings;
+
+	$alt = false;
+	echo '
+	<table width="100%" border="0" cellspacing="0" cellpadding="3">
+		<tr>
+			<td>', theme_linktree(), '</td>
+		</tr>
+	</table>';
+
+	echo '
+		<div class="tborder" ', $context['browser']['needs_size_fix'] && !$context['browser']['is_ie6'] ? 'style="width: 100%;"' : '', '>
+			<table border="0" width="100%" cellspacing="0" cellpadding="4" class="t" id="topicTable">
+				<tr class="catbg">';
+
+	// Are there actually any topics to show?
+	echo '
+					<td width="15%" class="catbg3"><strong>', $txt['board'], '</strong></td>
+					<td class="catbg3"><strong>', $txt['topic'], '</strong></td>
+					<td width="50" class="catbg3" align="center"><strong>', $txt['replies'], '</strong></td>
+					<td width="150" class="catbg3" align="center"><strong>', $txt['started_by'], '</strong></td>
+					<td width="150" class="catbg3" align="center"><strong>', $txt['last_post'], '</strong></td>
+					<td width="16" class="catbg3"></td>
+				</tr>';
+
+	// No topics.... just say, "sorry bub".
+	if (empty($context['topics']))
+		echo '
+				<tr id="no_topics">
+					<td class="windowbg2" width="100%" colspan="6"><strong>', $txt[151], '</strong></td>';
+
+	else
+		foreach ($context['topics'] as $topic)
+		{
+			echo '
+				<tr class="windowbg', ($alt ? '2' : ''), '" id="topic_', $topic['id'], '">
+					<td class="smalltext" style="padding-left: 10px; border-bottom: 1px solid rgb(204, 204, 204);">', $topic['board']['link'], '</td>
+					<td style="padding-left: 10px; border-bottom: 1px solid rgb(204, 204, 204);">', $topic['link'], '</td>
+					<td align="center" class="smalltext" style="border-bottom: 1px solid rgb(204, 204, 204);">', $topic['replies'], '</td>
+					<td align="center" class="smalltext" style="border-bottom: 1px solid rgb(204, 204, 204);">', $topic['firstPoster']['link'], '<br />', $topic['firstPoster']['time'], '</td>
+					<td align="center" class="smalltext" style="border-bottom: 1px solid rgb(204, 204, 204);">', $topic['lastPoster']['link'], '<br />', $topic['lastPoster']['time'], '</td>
+					<td align="center" style="border-bottom: 1px solid rgb(204, 204, 204);"><a href="', $topic['lastPost']['href'], '"><img src="', $settings['images_url'], '/icons/last_post.gif" alt="', $txt['last_post'], '" title="', $txt['last_post'], '" /></a></td>
+				</tr>';
+		$alt = !$alt;
+		}
+	
+	echo '
+			</table>
+		</div>';
+	
+	// Now for all of the javascript stuff
+	echo '
+		<script language="Javascript" type="text/javascript"><!-- // -->
+			var last_post = ', (!empty($context['last_post_time']) ? $context['last_post_time'] : 0), ';
+			var time_interval = ', $modSettings['number_recent_topics_interval'] * 1000, ';
+			var max_topics = ', $modSettings['number_recent_topics'], ';
+			
+			var interval_id = setInterval( "getTopics()", time_interval);
+
+			function getTopics()
+			{
+				if (window.XMLHttpRequest)
+					getXMLDocument("', $scripturl, '?action=recenttopics;latest=" + last_post + ";xml", gotTopics);
+				else
+					clearInterval(interval_id);
+			}
+			
+			function gotTopics(XMLDoc)
+			{
+				var updated_time = XMLDoc.getElementsByTagName("smf")[0].getElementsByTagName("lastTime")[0];
+				var topics = XMLDoc.getElementsByTagName("smf")[0].getElementsByTagName("topic");
+				var topic, id_topic, board, subject, replies, firstPost, lastPost, link;
+				var myTable = document.getElementById("topicTable"), oldRow, myRow, myCell, myData, rowCount;
+				
+				// If this exists, we have at least one updated/new topic
+				if (updated_time)
+				{
+					// Update the last post time
+					last_post = updated_time.childNodes[0].nodeValue;
+					
+					// No Messages message?  Ditch it!
+					// Note, this should only happen if there are literally zero topics
+					// on the board when a user visits this page.
+					if (document.getElementById("no_topics") != null)
+						myTable.deleteRow(-1);
+					
+					// If the topic is already in the list, remove it
+					for (var i = 0; i < topics.length; i++)
+					{
+						topic = XMLDoc.getElementsByTagName("smf")[0].getElementsByTagName("topic")[i];
+						id_topic = topic.getElementsByTagName("id")[0].childNodes[0].nodeValue;
+						if ((oldRow = document.getElementById("topic_" + id_topic)) != null)
+							myTable.deleteRow(oldRow.rowIndex);
+					}
+					
+					// Are we going to exceed the maximum topic count allowed?
+					while (((myTable.rows.length - 1 + topics.length) - max_topics) > 0)
+						myTable.deleteRow(-1);
+					
+					// Now start the insertion
+					for (var i = 0; i < topics.length; i++)
+					{
+						// Lets get all of our data
+						topic = XMLDoc.getElementsByTagName("smf")[0].getElementsByTagName("topic")[i];
+						id_topic = topic.getElementsByTagName("id")[0].childNodes[0].nodeValue;
+						board = topic.getElementsByTagName("board")[0].childNodes[0].nodeValue;
+						subject = topic.getElementsByTagName("subject")[0].childNodes[0].nodeValue;
+						replies = topic.getElementsByTagName("replies")[0].childNodes[0].nodeValue;
+						firstPost = topic.getElementsByTagName("first")[0].childNodes[0].nodeValue;
+						lastPost = topic.getElementsByTagName("last")[0].childNodes[0].nodeValue;
+						link = topic.getElementsByTagName("lastLink")[0].childNodes[0].nodeValue;
+						
+						// Now to create the new row...
+						myRow = myTable.insertRow(1);
+						myRow.id = "topic_" + id_topic;
+						myRow.className = "windowbg";
+						
+						// First the Board
+						myCell = myRow.insertCell(-1);
+						myCell.className = "smalltext";
+						myCell.style.paddingLeft = "10px";
+						myCell.style.borderBottom = "1px solid rgb(204, 204, 204)";
+						setInnerHTML(myCell, board);
+						
+						// Then subject
+						myCell = myRow.insertCell(-1);
+						myCell.style.paddingLeft = "10px";
+						myCell.style.borderBottom = "1px solid rgb(204, 204, 204)";
+						setInnerHTML(myCell, subject);
+						
+						// replies
+						myCell = myRow.insertCell(-1);
+						myCell.className = "smalltext";
+						myCell.align = "center"
+						myCell.style.borderBottom = "1px solid rgb(204, 204, 204)";
+						setInnerHTML(myCell, replies);
+						
+						// first post
+						myCell = myRow.insertCell(-1);
+						myCell.className = "smalltext";
+						myCell.align = "center"
+						myCell.style.borderBottom = "1px solid rgb(204, 204, 204)";
+						setInnerHTML(myCell, firstPost);
+						
+						// last post
+						myCell = myRow.insertCell(-1);
+						myCell.className = "smalltext";
+						myCell.align = "center"
+						myCell.style.borderBottom = "1px solid rgb(204, 204, 204)";
+						setInnerHTML(myCell, lastPost);
+						
+						// last post
+						myCell = myRow.insertCell(-1);
+						myCell.align = "center"
+						myCell.style.borderBottom = "1px solid rgb(204, 204, 204)";
+						setInnerHTML(myCell, link);
+					}
+
+					correctAltBG(myTable, "tr");
+				}
+			}
+
+			function correctAltBG(oElement, sChild)
+			{
+				element = oElement.getElementsByTagName(sChild);
+				var i = element.length;
+				while (i--)
+				{
+					if (element[i].id.indexOf("topic_") > -1)
+						if (i % 2 == 0)
+							element[i].className = "windowbg2";
+						else
+							element[i].className = "windowbg";
+				}
+			}
+		// ]]></script>';
+}
+
+function template_recent_xml()
+{
+	global $context, $modSettings, $settings, $txt;
+	
+	echo '<?xml version="1.0" encoding="', $context['character_set'], '"?>
+<smf>';
+	
+	if (!empty($context['topics']))
+		echo '
+	<lastTime><!', '[CDATA[', $context['last_post_time'], ']', ']></lastTime>';
+	
+	foreach ($context['topics'] as $topic)
+		echo '
+	<topic>
+		<id><!', '[CDATA[', $topic['id'], ']', ']></id>
+		<board><!', '[CDATA[', str_replace(']'.']>', ']]]'.']><!'.'[CDATA[>', $topic['board']['link']), ']', ']></board>
+		<subject><!', '[CDATA[', str_replace(']'.']>', ']]]'.']><!'.'[CDATA[>', $topic['link']), ']', ']></subject>
+		<replies><!', '[CDATA[', $topic['replies'], ']', ']></replies>
+		<first><!', '[CDATA[', str_replace(']'.']>', ']]]'.']><!'.'[CDATA[>', $topic['firstPoster']['link'] . '<br />' . $topic['firstPoster']['time']), ']', ']></first>
+		<last><!', '[CDATA[', str_replace(']'.']>', ']]]'.']><!'.'[CDATA[>', $topic['lastPoster']['link'] . '<br />' . $topic['lastPoster']['time']), ']', ']></last>
+		<lastLink><!', '[CDATA[<a href="', $topic['lastPost']['href'], '"><img src="', $settings['images_url'], '/icons/last_post.gif" alt="', $txt['last_post'], '" title="', $txt['last_post'], '" /></a>]', ']></lastLink>
+	</topic>';
+	
+	echo '
+</smf>';
+}
+
 
 ?>
