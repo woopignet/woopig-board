@@ -368,4 +368,48 @@ $txt['languages_download_complete'] = 'Installation Complete';
 $txt['languages_download_complete_desc'] = 'Language pack installed successfully. Please click <a href="%1$s">here</a> to return to the languages page';
 $txt['languages_delete_confirm'] = 'Are you sure you want to delete this language?';
 
+
+  
+//Tapatalk
+$txt['tapatalktitle'] = 'Tapatalk Settings';
+$txt['tp_tapatalkRegisterEnabled'] = 'In-app Registration';
+$txt['tp_general_settings'] = 'General';
+$txt['tp_board_settings'] = 'Boards';
+$txt['tp_other_settings'] = 'Help';
+$txt['tp_parent_board'] = 'Boards1';
+$txt['tp_child_board'] = 'Boards2';
+$txt['tp_board_settingsDesc'] = 'Settings related to boards';
+$txt['tp_general_settingsDesc'] = 'These are general settings for tapatalk';
+$txt['tp_other_settingsDesc'] = 'Taptalk information';
+$txt['tp_select_boards'] = 'Select Boards to HIDE on Tapatalk';
+$txt['tp_disable_newtopic'] = 'Disable New Topic For Boards';
+$txt['tp_push_key'] = 'Tapatalk API Key';
+$txt['tp_ads_disabled'] = 'Disable Ads for Group';
+$txt['tp_push_notifications'] = 'Push Notifications';
+
+//Tapatalk IAR
+$txt['tp_iar_registration_options'] = 'In-App Registration';
+$txt['tp_iar_usergroup_assignment'] = 'User Group Assignment';
+$txt['tp_iar_settingsDesc'] = 'Settings related to In App Registration';
+$txt['auto_approval_tp_user'] = 'Automatic approval for user registered from Tapatalk';
+
+$txt['tp_custom_content_replacement'] = 'Thread Content Replacement(Advanced)';
+$txt['taptalk_descp'] = '<strong>Tapatalk for SMF Plugin</strong></br><br>
+For SMF 2.0, <a href = "https://www.tapatalk.com">https://www.tapatalk.com</a></br>
+For more remote settings, please check <a style="color:red;" href = "https://siteowners.tapatalk.com/forums"><u>here</u></a>.<br><br>
+<b>What is Tapatalk?</b></br>
+Tapatalk is a forum app for iOS and Android platform. The app provides super fast forum access to any vBulletin, IPBoard, phpBB, SMF, xenForo, MyBB and Kunena forums that have activated Tapatalk. Forum owner can download the free plug-in to activate Tapatalk in your forum.</br>
+
+<b>What does this mod do?</b></br>
+This mod enables your forum to be accessed by the Tapatalk app. The Tapatalk app can be downloaded from Apple iTune Store or from Google Android Market.</br>
+
+<b>What next do I have to do?</b></br>
+After installing this mod, head straight to <a href = "https://siteowners.tapatalk.com/landing/signin">https://siteowners.tapatalk.com/landing/signin</a> and register there. After registering you can enlist your forum into the Tapatalk network.</br>
+</br>
+Please manually change permission of all files under mobiquo/ folder (including the folder itself) to chmod 755 otherwise it won\'t work!!</br>
+</br>
+For more information please visit tapatalk.com</br>
+<br>
+Thank you! :)';
+
 ?>

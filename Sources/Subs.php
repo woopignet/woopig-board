@@ -2476,7 +2476,12 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 		}
 
 		// End Auto Embed Media Pro
-// Cache the output if it took some time...
+
+              // Parse tapatalk emojis.
+	$message = preg_replace('/\[emoji(\d+)\]/i', '<img src="https://emoji.tapatalk-cdn.com/emoji$1.png" />', $message);
+	$message = preg_replace('#<a [^>]*?href="https?://(www\.)?vimeo\.com/(\d+)"[^>]*?>[^>]*?</a>#si', '<iframe src="https://player.vimeo.com/video/$2" width="500" height="300" frameborder="0"></iframe>', $message);
+
+	// Cache the output if it took some time...
 	if (isset($cache_key, $cache_t) && array_sum(explode(' ', microtime())) - array_sum(explode(' ', $cache_t)) > 0.05)
 		cache_put_data($cache_key, $message, 240);
 
@@ -2802,6 +2807,7 @@ function redirectexit($setLocation = '', $refresh = false)
 function obExit($header = null, $do_footer = null, $from_index = false, $from_fatal_error = false)
 {
 	global $context, $settings, $modSettings, $txt, $smcFunc, $remember_old_url;
+	global$boarddir;
 	static $header_done = false, $footer_done = false, $level = 0, $has_fatal_error = false;
 
 	// Attempt to prevent a recursive loop.
@@ -2828,6 +2834,9 @@ function obExit($header = null, $do_footer = null, $from_index = false, $from_fa
 		// Was the page title set last minute? Also update the HTML safe one.
 		if (!empty($context['page_title']) && empty($context['page_title_html_safe']))
 			$context['page_title_html_safe'] = $smcFunc['htmlspecialchars'](un_htmlspecialchars($context['page_title']));
+		//tapatalk add
+		include_once($boarddir.'/mobiquo/smartbanner.php');
+
 
 		// Start up the session URL fixer.
 		ob_start('ob_sessrewrite');

@@ -2059,13 +2059,26 @@ function Post2()
 				'board' => $board,
 				'topic' => $topic,
 			);
-			notifyMembersBoard($notifyData);
+
+              			notifyMembersBoard($notifyData);
+            	//tapatalk add
+            	if(function_exists('sourcedir_Post_function_two')){
+            	    sourcedir_Post_function_two($msgOptions);
+            	}
+			
 		}
 		elseif (empty($_REQUEST['msg']))
 		{
-			// Only send it to everyone if the topic is approved, otherwise just to the topic starter if they want it.
+
+          			// Only send it to everyone if the topic is approved, otherwise just to the topic starter if they want it.
+            	//tapatalk add
 			if ($topic_info['approved'])
+			{
 				sendNotifications($topic, 'reply');
+				if(function_exists('sourcedir_Post_function_one')){
+                    sourcedir_Post_function_one($msgOptions);
+                }
+			}
 			else
 				sendNotifications($topic, 'reply', array(), $topic_info['id_member_started']);
 		}

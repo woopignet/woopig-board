@@ -610,4 +610,19 @@ $helptxt['custom_mask'] = 'The input mask is important for your forum\'s securit
 $helptxt['image_proxy_enabled'] = 'Whether to enable the image proxy';
 $helptxt['image_proxy_secret'] = 'Keep this a secret, protects your forum from hotlinking images. Change it in order to render current hotlinked images useless';
 $helptxt['image_proxy_maxsize'] = 'Maximum image size that the image proxy will cache: bigger images will be not be cached. Cached images are stored in your SMF cache folder, so make sure you have enough free space.';
+
+  
+//Tapatalk start
+$helptxt['tp_push_key'] = 'Optional. To improve the quality of Push Notification from your forum, please fill-in copy and paste the Push Notification Key from Tapatalk Forum Owner Area to here.';
+$helptxt['tp_ads_disabled'] = 'This option will prevent Tapatalk from displaying advertisements. Users in the selected groups will not be served ads when using the Tapatalk app. Please enter a comma-separated group ID.';
+$helptxt['tp_hide_boards'] = 'Hide forums you don\'t want them to be listed in Tapatalk app.';
+$helptxt['tp_dsa_boards'] = 'Prevent Tapatalk users to create new topic in the selected sub-forums. This feature is useful if certain forums requires additional topic fields or permission that Tapatalk does not support.';
+$helptxt['tp_custom_content_replacement'] = 'Ability to match and replace thread content using PHP preg_replace function(http://www.php.net/manual/en/function.preg-replace.php). E.g. "\'pattern\', \'replacement\'" . You can define more than one replace rule on each line.';
+$helptxt['tp_push_notifications'] = 'Basic Message - Do not include post content and images preview in Push Notifications<br />
+Rich Message - Includes post content and images preview in Push Notifications';
+//Tapatalk IAR
+$helptxt['tp_iar_registration_options'] = 'Verified Tapatalk users signed in from Facebook, Google or verified email address can register your forum natively in-app. Addition custom fields are also supported, although we strongly recommend to keep the custom fields to absolute minimal to make registration easier on mobile.';
+$helptxt['tp_iar_usergroup_assignment'] = 'You can assign users registered with Tapatalk to specific user groups. If you do not assign them to a specific group, they will be assigned a default group.';
+$helptxt['auto_approval_tp_user'] = 'Automatically Approve Verified Tapatalk Members.';
+
 ?>
