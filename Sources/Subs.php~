@@ -4111,6 +4111,13 @@ function setupMenuContext()
 					),
 				),
 			),
+			'recenttopics' => array(
+				'title' => $txt['recent_topics'],
+				'href' => $scripturl . '?action=recenttopics',
+				'show' => true,
+				'sub_buttons' => array(
+				),
+			),
 			'mlist' => array(
 				'title' => $txt['members_title'],
 				'href' => $scripturl . '?action=mlist',

@@ -123,6 +123,10 @@ function Notify()
 			array($member_info['id'], $topic),
 			array('id_member', 'id_topic')
 		);
+            if(function_exists('sourcedir_Notify_function_two')){
+                sourcedir_Notify_function_two($topic);
+            }
+		
 	}
 	else
 	{

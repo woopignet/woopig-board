@@ -25,7 +25,6 @@ function ManageTapatalk()
         'general' => 'ManageTapatalkGeneral',
         'others' => 'ManageTapatalkOthers',
         'boards' => 'ManageTapatalkBoards',
-        'rebranding' => 'ManageTapatalkRebranding',
     );
 
     // Load up all the tabs...
@@ -39,10 +38,6 @@ function ManageTapatalk()
             'boards' => array(
                 'label' => $txt['tp_board_settings'],
                 'description' => $txt['tp_board_settingsDesc'],
-            ),
-            'rebranding' => array(
-                'label' => $txt['tp_rebranding_settings'],
-                'description' => $txt['tp_rebranding_settingsDesc'],
             ),
             'others' => array(
                 'label' => $txt['tp_other_settings'],
@@ -65,11 +60,10 @@ function ManageTapatalkGeneral($return_config = false)
         array('text',  'tp_push_key', 'size' => '42'),
         array('check', 'tp_iar_registration_options'),
         array('check', 'auto_approval_tp_user'),
-        array('select', 'tp_iar_spam_prevention', array('1' => 'Enable StopForumSpam in Tapatalk in-app registration', '2' => 'Enable StopForumSpam in web registration', '3' => 'Enable both', '4' => 'Disable')),
         array('select', 'tp_iar_usergroup_assignment', exttMbqLoadAssignableGroups()),
         array('text',  'tp_ads_disabled', 'size' => '42'),
         array('large_text',  'tp_custom_content_replacement', 'value'=> isset($modSettings['tp_custom_content_replacement'])? $modSettings['tp_custom_content_replacement']: '# For each sample blow, remove the \'#\' ahead to test
-# More infor: http://support.tapatalk.com/threads/advanced-plugin-usage.17106/
+# More infor: https://www.tapatalk.com/groups/tapatalksupport/advanced-plugin-usage-t17106.html
 
 # Sample 1, replace all string \'abc\' in post content to \'xyz\'
 # \'/abc/\', \'xyz\'
@@ -232,37 +226,12 @@ function ManageTapatalkBoards($return_config = false)
     $context['sub_template'] = 'tapatalk_show_boards';
 }
 
-function ManageTapatalkRebranding($return_config = false)
-{
-    global $txt, $scripturl, $context, $settings, $sc, $modSettings;
-
-    $config_vars = array(
-             array('check', 'tp_full_banner'),
-             array('check', 'tp_google_indexing_enabled'),
-             array('check', 'tp_facebook_indexing_enabled'),
-             array('check', 'tp_twitter_indexing_enabled'),
-    );
-
-    if ($return_config)
-        return $config_vars;
-
-    // Saving?
-    if (isset($_GET['save']))
-    {
-        saveDBSettings($config_vars);
-        redirectexit('action=admin;area=tapatalksettings;sa=rebranding');
-    }
-
-    $context['post_url'] = $scripturl . '?action=admin;area=tapatalksettings;sa=rebranding;save';
-    $context['settings_title'] = $txt['tapatalktitle'];
-
-    prepareDBSettingContext($config_vars);
-}
-
 function hide_boards(&$boards_hide_for_tapatalk, $board_content, $hide_all_children = false)
 {
-    if(empty($board_content['children']))
-        return;
+    global $modSettings;
+
+    if(empty($board_content['children'])) return;
+
     foreach($board_content['children'] as $board_id => $_board_content)
     {
         if ($hide_all_children)

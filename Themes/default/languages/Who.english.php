@@ -153,5 +153,6 @@ $txt['credits_groups_orignal_pm'] = 'Original Project Managers';
 $txt['credits_in_memoriam'] = 'In loving memory of';
 
 // List of people who have made more than a token contribution to this translation. (blank for English)
-$txt['translation_credits'] = array();
+$txt['on_tapatalk'] = 'On Tapatalk';
+$txt['on_byo'] = 'On App Of This Forum';$txt['translation_credits'] = array();
 ?>

@@ -2288,6 +2288,11 @@ function MessagePost2()
 		);
 	}
 
+	//Tapatalk pm push - start
+            if(function_exists('sourcedir_PersonalMessage_function_one')){
+	            sourcedir_PersonalMessage_function_one();
+	        }
+	//Tapatalk pm push - end
 	// If one or more of the recipient were invalid, go back to the post screen with the failed usernames.
 	if (!empty($context['send_log']['failed']))
 		return messagePostError($post_errors, $namesNotFound, array(
